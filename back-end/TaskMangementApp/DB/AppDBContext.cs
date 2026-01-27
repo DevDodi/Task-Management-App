@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading.Tasks;
 using TaskMangementApp.Models;
 
 namespace TaskMangementApp.DB
 {
-    public class DBContext : DbContext
+    public class AppDBContext : DbContext
     {
-        public DBContext(DbContextOptions options) : base(options) { }
+        public AppDBContext(DbContextOptions<AppDBContext> options) : base(options) { }
 
         public DbSet<Project> Projects { get; set; }
         public DbSet<Models.Task> Tasks { get; set; }
