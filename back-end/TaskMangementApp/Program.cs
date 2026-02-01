@@ -1,13 +1,21 @@
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Text.Json;
 using TaskMangementApp;
 using TaskMangementApp.DB;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+    
+builder.Services.AddControllers().AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+        options.JsonSerializerOptions.WriteIndented = true;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+    });
 
-builder.Services.AddControllers();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 

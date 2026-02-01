@@ -1,34 +1,38 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System.Net;
 using TaskMangementApp.DB;
 
 namespace TaskMangementApp.Controllers
 {
     [ApiController]
+    [Route("api/users")]
     public class UserController (AppDBContext dbContext)
     {
-        [HttpPost(Name = "CreateUser")]
+        [HttpPost]
         public HttpResponseMessage CreateUser(string userJson)
         {
+            return null;
 
         }
 
-        [HttpGet(Name = "GetUser")]
+        [HttpGet("{id}")]
         public HttpResponseMessage GetUser(Guid id)
         {
+            return null;
 
         }
 
-        [HttpPatch(Name = "UpdateUser")]
-        public HttpResponseMessage UpdateUser()
+        [HttpPatch("{id}")]
+        public HttpResponseMessage UpdateUser(Guid id, string userJson)
         {
+            return null;
 
         }
 
-        [HttpDelete(Name = "DeleteUser")]
-        public HttpResponseMessage DeleteUser()
+        [HttpDelete("{id}")]
+        public HttpResponseMessage DeleteUser(Guid id)
         {
+            return null;
 
         }
     }
