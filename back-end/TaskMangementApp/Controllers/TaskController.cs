@@ -24,12 +24,12 @@ namespace TaskMangementApp.Controllers
                 if (task is null)
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
 
-                var userExists = dbContext.Users.Any(u => u.Id == task.AssignedUser);
-                if (!userExists)
+                task.Id = task.Id == Guid.Empty || dbContext.Tasks.Any(t => t.Id == task.Id) ? Guid.NewGuid() : task.Id;
+
+                if (!dbContext.Users.Any(u => u.Id == task.AssignedUser))
                     throw new Exception("Assigned User does not exist");
 
-                var projectExists = dbContext.Projects.Any(p => p.Id == task.AssignedProject);
-                if (!projectExists)
+                if (!dbContext.Projects.Any(p => p.Id == task.AssignedProject))
                     throw new Exception("Assigned Project does not exist");
 
                 dbContext.Tasks.Add(task);

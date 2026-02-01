@@ -6,10 +6,10 @@ namespace TaskMangementApp.Models
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public TaskState Status { get; set; }
-        public Guid AssignedUser { get; set; }
-        public Guid AssignedProject { get; set; }
+        public Guid AssignedUser { get; set; } = Guid.Empty;
+        public Guid AssignedProject { get; set; } = Guid.Empty;
         public DateTimeOffset LastUpdatedUtc { get; set; }
     }
 

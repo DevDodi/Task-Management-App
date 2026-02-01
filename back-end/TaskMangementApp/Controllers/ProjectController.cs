@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text.Json;
+using System.Threading.Tasks;
 using TaskMangementApp.DB;
 using TaskMangementApp.Models;
 
@@ -22,6 +23,8 @@ namespace TaskMangementApp.Controllers
 
                 if (project is null)
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
+
+                project.Id = project.Id == Guid.Empty || dbContext.Projects.Any(p => p.Id == project.Id) ? Guid.NewGuid() : project.Id;
 
                 var ownerExists = dbContext.Users.Any(u => u.Id == project.OwnerId);
                 if (!ownerExists)
@@ -83,7 +86,6 @@ namespace TaskMangementApp.Controllers
                 return new HttpResponseMessage(HttpStatusCode.OK);
             }
             catch (Exception ex) { return new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent(ex.Message) }; }
-
         }
 
         [HttpDelete("{id}")]
