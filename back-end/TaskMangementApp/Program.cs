@@ -3,11 +3,18 @@ using System;
 using System.Text.Json;
 using TaskMangementApp;
 using TaskMangementApp.DB;
+using TaskMangementApp.Services;
+using TaskMangementApp.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-    
+
+builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<ITaskLogService, TaskLogService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 builder.Services.AddControllers().AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.PropertyNamingPolicy = null;

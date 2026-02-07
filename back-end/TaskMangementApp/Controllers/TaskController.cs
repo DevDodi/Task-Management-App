@@ -1,127 +1,77 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using TaskMangementApp.DB;
+using TaskMangementApp.Services;
+using TaskMangementApp.Services.Interfaces;
 
 namespace TaskMangementApp.Controllers
 {
     [ApiController]
     [Route("api/tasks")]
-    public class TaskController(AppDBContext dbContext)
+    public class TaskController(ITaskService taskService)
     {
         [HttpPost]
-        public HttpResponseMessage CreateTask(string taskJson)
+        public async Task<IActionResult> CreateTask([FromBody] string taskJson)
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(taskJson))
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            if (string.IsNullOrWhiteSpace(taskJson))
+                return new BadRequestResult();
 
-                Models.Task? task = JsonSerializer.Deserialize<Models.Task>(taskJson);
+            var result = await taskService.CreateTaskAsync(taskJson);
 
-                if (task is null)
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            if (!result.Success)
+                return new BadRequestObjectResult(result.Message);
 
-                task.Id = task.Id == Guid.Empty || dbContext.Tasks.Any(t => t.Id == task.Id) ? Guid.NewGuid() : task.Id;
-
-                if (!dbContext.Users.Any(u => u.Id == task.AssignedUser))
-                    throw new Exception("Assigned User does not exist");
-
-                if (!dbContext.Projects.Any(p => p.Id == task.AssignedProject))
-                    throw new Exception("Assigned Project does not exist");
-
-                dbContext.Tasks.Add(task);
-                dbContext.SaveChanges();
-
-                return new HttpResponseMessage(HttpStatusCode.OK);
-            }
-            catch (Exception ex) { return new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent(ex.Message) }; }
+            return new OkResult();
         }
 
         [HttpGet("{id}")]
-        public HttpResponseMessage GetTask(Guid id)
+        public async Task<ActionResult<Models.Task>> GetTask(Guid id)
         {
-            try
-            {
-                if (id == Guid.Empty)
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            if (id == Guid.Empty)
+                return new BadRequestResult();
 
-                var task = dbContext.Tasks.Find(id);
+            var result = await taskService.GetTaskAsync(id);
 
-                if (task is null)
-                    return new HttpResponseMessage(HttpStatusCode.NotFound);
+            if (!result.Success)
+                return new BadRequestObjectResult(result.Message);
 
-                var taskJson = JsonSerializer.Serialize(task);
-
-                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(taskJson) };
-            }
-            catch (Exception ex) { return new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent(ex.Message) }; }
+            return new OkObjectResult(result.Task);           
         }
 
         [HttpGet]
-        public HttpResponseMessage GetAllTasks()
+        public async Task<ActionResult<List<Models.Task>>> GetAllTasks()
         {
-            try
-            {
-                var tasks = dbContext.Tasks.ToList();
-                string taskListJson = JsonSerializer.Serialize(tasks);
-
-                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(taskListJson) };
-            }
-            catch (Exception ex) { return new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent(ex.Message) }; }
+            var result = await taskService.GetAllTasksAsync();
+            return new OkObjectResult(result.Tasks);
         }
 
         [HttpPut("{id}")]
-        public HttpResponseMessage UpdateTask(Guid id, string taskJson)
+        public async Task<IActionResult> UpdateTask(Guid id, [FromBody] string taskJson)
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(taskJson))
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            if (string.IsNullOrWhiteSpace(taskJson))
+                return new BadRequestResult();
+                
+            var result = await taskService.UpdateTaskAsync(id, taskJson);
 
-                Models.Task? task = JsonSerializer.Deserialize<Models.Task>(taskJson);
+            if (!result.Success)
+                return new BadRequestObjectResult(result.Message);
 
-                if (task is null)
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
-
-                var userExists = dbContext.Users.Any(u => u.Id == task.AssignedUser);
-                if (!userExists)
-                    throw new Exception("Assigned User does not exist");
-
-                var projectExists = dbContext.Projects.Any(p => p.Id == task.AssignedProject);
-                if (!projectExists)
-                    throw new Exception("Assigned Project does not exist");
-
-                var existingTask = dbContext.Tasks.FirstOrDefault(t => t.Id == id);
-
-                if (existingTask is null)
-                    return new HttpResponseMessage(HttpStatusCode.NotFound);
-
-                existingTask = task;
-                dbContext.SaveChanges();
-
-                return new HttpResponseMessage(HttpStatusCode.OK);
-            }
-            catch (Exception ex) { return new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent(ex.Message) }; }
+            return new OkResult();
         }
 
         [HttpDelete("{id}")]
-        public HttpResponseMessage DeleteTask(Guid id)
+        public async Task<IActionResult> DeleteTask(Guid id)
         {
-            try
-            {
-                if (id == Guid.Empty)
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            if (id == Guid.Empty)
+                return new BadRequestResult();
 
-                var task = new Models.Task { Id = id };
-                dbContext.Tasks.Remove(task);
-                dbContext.SaveChanges();
+            var result = taskService.DeleteTaskAsync(id);
 
-                return new HttpResponseMessage(HttpStatusCode.OK);
-            }
-            catch (Exception ex) { return new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent(ex.Message) }; }
+            return new OkResult();
         }
     }
 }

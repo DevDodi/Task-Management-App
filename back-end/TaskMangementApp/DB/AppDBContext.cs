@@ -16,7 +16,8 @@ namespace TaskMangementApp.DB
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=taskmanagement.db;");
+            if (!optionsBuilder.IsConfigured)
+                optionsBuilder.UseSqlite("Data Source=taskmanagement.db;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

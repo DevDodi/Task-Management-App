@@ -4,105 +4,66 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using TaskMangementApp.DB;
 using TaskMangementApp.Models;
+using TaskMangementApp.Services;
 
 namespace TaskMangementApp.Controllers
 {
     [ApiController]
     [Route("api/projects")]
-    public class ProjectController(AppDBContext dbContext)
+    public class ProjectController(ProjectService projectService)
     {
         [HttpPost]
-        public HttpResponseMessage CreateProject(string projectJson)
+        public async Task<IActionResult> CreateProject([FromBody] string projectJson)
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(projectJson))
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            if (string.IsNullOrWhiteSpace(projectJson))
+                return new BadRequestResult();
 
-                Project? project = JsonSerializer.Deserialize<Project>(projectJson);
+            var result = await projectService.CreateProjectAsync(projectJson);
 
-                if (project is null)
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
-
-                project.Id = project.Id == Guid.Empty || dbContext.Projects.Any(p => p.Id == project.Id) ? Guid.NewGuid() : project.Id;
-
-                var ownerExists = dbContext.Users.Any(u => u.Id == project.OwnerId);
-                if (!ownerExists)
-                    throw new Exception("Assigned Owner does not exist");
-
-                dbContext.Projects.Add(project);
-                dbContext.SaveChanges();
-
-                return new HttpResponseMessage(HttpStatusCode.OK);
-            }
-            catch (Exception ex) { return new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent(ex.Message) }; }
+            if (!result.Success)
+                return new BadRequestObjectResult(result.Message);
+            
+            return new OkResult();
         }
 
         [HttpGet("{id}")]
-        public HttpResponseMessage GetProject(Guid id)
+        public async Task<ActionResult<Project>> GetProject(Guid id)
         {
-            try
-            {
-                if (id == Guid.Empty)
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
 
-                var project = dbContext.Projects.Find(id);
+            if (id == Guid.Empty)
+                return new BadRequestResult();
 
-                if (project is null)
-                    return new HttpResponseMessage(HttpStatusCode.NotFound);
+            var result = await projectService.GetProjectAsync(id);
 
-                var projectJson = JsonSerializer.Serialize(project);
+            if (!result.Success)
+                return new BadRequestObjectResult(result.Message);
 
-                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(projectJson) };
-            }
-            catch (Exception ex) { return new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent(ex.Message) }; }
+            return new OkObjectResult(result.Project);   
         }
 
         [HttpPatch("{id}")]
-        public HttpResponseMessage UpdateProject(Guid id, string projectJson)
+        public async Task<IActionResult> UpdateProject(Guid id, [FromBody] string projectJson)
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(projectJson))
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            if (string.IsNullOrWhiteSpace(projectJson))
+                return new BadRequestResult();
 
-                Project? project = JsonSerializer.Deserialize<Project>(projectJson);
+            var result = await projectService.UpdateProjectAsync(id, projectJson);
 
-                if (project is null)
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            if (!result.Success)
+                return new BadRequestObjectResult(result.Message);
 
-                var ownerExists = dbContext.Users.Any(u => u.Id == project.OwnerId);
-                if (!ownerExists)
-                    throw new Exception("Assigned Owner does not exist");
-
-                var existingProject = dbContext.Projects.FirstOrDefault(t => t.Id == id);
-
-                if (existingProject is null)
-                    return new HttpResponseMessage(HttpStatusCode.NotFound);
-
-                existingProject = project;
-                dbContext.SaveChanges();
-
-                return new HttpResponseMessage(HttpStatusCode.OK);
-            }
-            catch (Exception ex) { return new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent(ex.Message) }; }
+            return new OkResult();            
         }
 
         [HttpDelete("{id}")]
-        public HttpResponseMessage DeleteProject(Guid id)
+        public async Task<IActionResult> DeleteProject(Guid id)
         {
-            try
-            {
-                if (id == Guid.Empty)
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            if (id == Guid.Empty)
+                return new BadRequestResult();
 
-                var project = new Project { Id = id };
-                dbContext.Projects.Remove(project);
-                dbContext.SaveChanges();
+            var result = await projectService.DeleteProjectAsync(id);
 
-                return new HttpResponseMessage(HttpStatusCode.OK);
-            }
-            catch (Exception ex) { return new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent(ex.Message) }; }
+            return new OkResult();       
         }
     }
 }

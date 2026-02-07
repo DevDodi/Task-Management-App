@@ -3,103 +3,65 @@ using System.Net;
 using System.Text.Json;
 using TaskMangementApp.DB;
 using TaskMangementApp.Models;
+using TaskMangementApp.Services;
 
 namespace TaskMangementApp.Controllers
 {
     [ApiController]
     [Route("api/users")]
-    public class UserController (AppDBContext dbContext)
+    public class UserController (UserService userService)
     {
         [HttpPost]
-        public HttpResponseMessage CreateUser(string userJson)
+        public async Task<IActionResult> CreateUser([FromBody] string userJson)
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(userJson))
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            if (string.IsNullOrWhiteSpace(userJson))
+                return new BadRequestResult();
 
-                User? user = JsonSerializer.Deserialize<User>(userJson);
+            var result = await userService.CreateUserAsync(userJson);
 
-                if (user is null)
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            if (!result.Success)
+                return new BadRequestObjectResult(result.Message);
 
-                if (dbContext.Users.Any(u => u.Email == user.Email))
-                    throw new Exception("This email is currently being used by another User.");
-
-                user.Id = user.Id == Guid.Empty ? Guid.NewGuid() : user.Id;
-
-                dbContext.Users.Add(user);
-                dbContext.SaveChanges();
-
-                return new HttpResponseMessage(HttpStatusCode.OK);
-            }
-            catch (Exception ex) { return new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent(ex.Message) }; }
+            return new OkResult();
         }
 
         [HttpGet("{id}")]
-        public HttpResponseMessage GetUser(Guid id)
+        public async Task<ActionResult<User>> GetUser(Guid id)
         {
-            try
-            {
-                if (id == Guid.Empty)
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            if (id == Guid.Empty)
+                return new BadRequestResult();
 
-                var user = dbContext.Users.Find(id);
+            var result = await userService.GetUserAsync(id);
 
-                if (user is null)
-                    return new HttpResponseMessage(HttpStatusCode.NotFound);
+            if (!result.Success)
+                return new BadRequestObjectResult(result.Message);
 
-                var userJson = JsonSerializer.Serialize(user);
-
-                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(userJson) };
-            }
-            catch (Exception ex) { return new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent(ex.Message) }; }
+            return new OkObjectResult(result.User);
         }
 
         [HttpPatch("{id}")]
-        public HttpResponseMessage UpdateUser(Guid id, string userJson)
+        public async Task<IActionResult> UpdateUser(Guid id, [FromBody] string userJson)
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(userJson))
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            if (string.IsNullOrWhiteSpace(userJson))
+                return new BadRequestResult();
 
-                User? user = JsonSerializer.Deserialize<User>(userJson);
+            var result = await userService.UpdateUserAsync(id, userJson);
 
-                if (user is null)
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            if (!result.Success)
+                return new BadRequestObjectResult(result.Message);
 
-                if (dbContext.Users.Any(u => u.Email == user.Email && u.Id != user.Id))
-                    throw new Exception("This email is currently being used by another User.");
-
-                var existingUser = dbContext.Users.FirstOrDefault(u => u.Id == id);
-
-                if (existingUser is null)
-                    return new HttpResponseMessage(HttpStatusCode.NotFound);
-
-                existingUser = user;
-                dbContext.SaveChanges();
-
-                return new HttpResponseMessage(HttpStatusCode.OK);
-            }
-            catch (Exception ex) { return new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent(ex.Message) }; }
+            return new OkResult();
         }
 
         [HttpDelete("{id}")]
-        public HttpResponseMessage DeleteUser(Guid id)
+        public async Task<IActionResult> DeleteUser(Guid id)
         {
-            try
-            {
-                if (id == Guid.Empty)
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            if (id == Guid.Empty)
+                return new BadRequestResult();
 
-                var user = new User { Id = id };
-                dbContext.Users.Remove(user);
-                dbContext.SaveChanges();
+            var result = await userService.DeleteUserAsync(id);
 
-                return new HttpResponseMessage(HttpStatusCode.OK);
-            }
-            catch (Exception ex) { return new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent(ex.Message) }; }
+            return new OkResult();
         }
     }
 }

@@ -1,18 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TaskMangementApp.DB;
+using TaskMangementApp.Models;
+using TaskMangementApp.Services;
 
 namespace TaskMangementApp.Controllers
 {
     [ApiController]
     [Route("api/tasklogs")]
-    public class TaskLogController(AppDBContext dbContext)
+    public class TaskLogController(TaskLogService taskLogService)
     {
 
         [HttpGet("{taskId}")]
-        public HttpResponseMessage GetTaskLogs(Guid taskId, DateTimeOffset? startDateRange, DateTimeOffset? endDateRange)
+        public async Task<ActionResult<List<TaskLog>>> GetTaskLogs(Guid taskId, DateTimeOffset? startDateRange, DateTimeOffset? endDateRange)
         {
             return null;
-
         }
     }
 }
