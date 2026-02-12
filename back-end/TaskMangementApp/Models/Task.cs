@@ -4,13 +4,13 @@ namespace TaskMangementApp.Models
 {
     public class Task
     {
-        public Guid Id { get; set; }
-        public string Title { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public required string Title { get; set; }
         public string? Description { get; set; }
         public TaskState Status { get; set; }
         public Guid AssignedUser { get; set; } = Guid.Empty;
         public Guid AssignedProject { get; set; } = Guid.Empty;
-        public DateTimeOffset LastUpdatedUtc { get; set; }
+        public DateTimeOffset LastUpdatedUtc { get; set; } = DateTimeOffset.UtcNow;
     }
 
     public enum TaskState

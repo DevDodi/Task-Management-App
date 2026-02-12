@@ -8,7 +8,7 @@ namespace TaskMangementApp.Services
     {
         public Task<TaskLogServiceResponse> GetTaskLogsAsync(Guid taskId, DateTimeOffset? startDateRange, DateTimeOffset? endDateRange)
         {
-            throw new NotImplementedException();
+            return null; 
         }
     }
 }

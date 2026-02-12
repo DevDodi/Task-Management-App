@@ -1,13 +1,14 @@
-﻿using TaskMangementApp.Services.Responses;
+﻿using System.Text.Json;
+using TaskMangementApp.Services.Responses;
 
 namespace TaskMangementApp.Services.Interfaces
 {
     public interface ITaskService
     {
-        Task<TaskServiceResponse> CreateTaskAsync(string taskJson);
+        Task<TaskServiceResponse> CreateTaskAsync(JsonElement taskJson);
         Task<TaskServiceResponse> GetTaskAsync(Guid id);
         Task<TaskServiceResponseList> GetAllTasksAsync();
-        Task<TaskServiceResponse> UpdateTaskAsync(Guid id, string taskJson);
+        Task<TaskServiceResponse> UpdateTaskAsync(Guid id, JsonElement taskJson);
         Task<TaskServiceResponse> DeleteTaskAsync(Guid id);     
     }
 }

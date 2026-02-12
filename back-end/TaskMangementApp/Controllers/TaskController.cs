@@ -15,11 +15,8 @@ namespace TaskMangementApp.Controllers
     public class TaskController(ITaskService taskService)
     {
         [HttpPost]
-        public async Task<IActionResult> CreateTask([FromBody] string taskJson)
+        public async Task<IActionResult> CreateTask([FromBody] JsonElement taskJson)
         {
-            if (string.IsNullOrWhiteSpace(taskJson))
-                return new BadRequestResult();
-
             var result = await taskService.CreateTaskAsync(taskJson);
 
             if (!result.Success)
@@ -50,11 +47,8 @@ namespace TaskMangementApp.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTask(Guid id, [FromBody] string taskJson)
-        {
-            if (string.IsNullOrWhiteSpace(taskJson))
-                return new BadRequestResult();
-                
+        public async Task<IActionResult> UpdateTask(Guid id, [FromBody] JsonElement taskJson)
+        {            
             var result = await taskService.UpdateTaskAsync(id, taskJson);
 
             if (!result.Success)
