@@ -5,19 +5,17 @@ using System.Threading.Tasks;
 using TaskMangementApp.DB;
 using TaskMangementApp.Models;
 using TaskMangementApp.Services;
+using TaskMangementApp.Services.Interfaces;
 
 namespace TaskMangementApp.Controllers
 {
     [ApiController]
     [Route("api/projects")]
-    public class ProjectController(ProjectService projectService)
+    public class ProjectController(IProjectService projectService)
     {
         [HttpPost]
-        public async Task<IActionResult> CreateProject([FromBody] string projectJson)
+        public async Task<IActionResult> CreateProject([FromBody] JsonElement projectJson)
         {
-            if (string.IsNullOrWhiteSpace(projectJson))
-                return new BadRequestResult();
-
             var result = await projectService.CreateProjectAsync(projectJson);
 
             if (!result.Success)
@@ -42,11 +40,8 @@ namespace TaskMangementApp.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdateProject(Guid id, [FromBody] string projectJson)
+        public async Task<IActionResult> UpdateProject(Guid id, [FromBody] JsonElement projectJson)
         {
-            if (string.IsNullOrWhiteSpace(projectJson))
-                return new BadRequestResult();
-
             var result = await projectService.UpdateProjectAsync(id, projectJson);
 
             if (!result.Success)
@@ -62,6 +57,9 @@ namespace TaskMangementApp.Controllers
                 return new BadRequestResult();
 
             var result = await projectService.DeleteProjectAsync(id);
+
+            if (!result.Success)
+                return new NotFoundObjectResult(result.Message);
 
             return new OkResult();       
         }

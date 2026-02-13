@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace TaskMangementApp.Models
 {
@@ -10,6 +11,8 @@ namespace TaskMangementApp.Models
         public TaskState Status { get; set; }
         public Guid AssignedUser { get; set; } = Guid.Empty;
         public Guid AssignedProject { get; set; } = Guid.Empty;
+
+        [JsonIgnore]
         public DateTimeOffset LastUpdatedUtc { get; set; } = DateTimeOffset.UtcNow;
     }
 

@@ -9,17 +9,15 @@ namespace TaskMangementApp.Services
 {
     public class ProjectService(AppDBContext dbContext) : IProjectService
     {
-        public Task<ProjectServiceResponse> CreateProjectAsync(string projectJson)
+        public Task<ProjectServiceResponse> CreateProjectAsync(JsonElement projectJson)
         {
-            Project? project = JsonSerializer.Deserialize<Project>(projectJson);
+            Project? project = null;
+            try { project = JsonSerializer.Deserialize<Project>(projectJson); } catch { }
 
             if (project is null)
                 return System.Threading.Tasks.Task.FromResult(new ProjectServiceResponse(false));
 
-            project.Id = project.Id == Guid.Empty || dbContext.Projects.Any(p => p.Id == project.Id) ? Guid.NewGuid() : project.Id;
-
-            var ownerExists = dbContext.Users.Any(u => u.Id == project.OwnerId);
-            if (!ownerExists)
+            if (project.OwnerId != Guid.Empty && !dbContext.Users.Any(u => u.Id == project.OwnerId))
                 return System.Threading.Tasks.Task.FromResult(new ProjectServiceResponse(false, null, "Assigned Owner does not exist"));
 
             dbContext.Projects.Add(project);
@@ -30,8 +28,12 @@ namespace TaskMangementApp.Services
 
         public Task<ProjectServiceResponse> DeleteProjectAsync(Guid id)
         {
-            var project = new Project { Id = id };
-            dbContext.Projects.Remove(project);
+            var existingProject = dbContext.Projects.Find(id);
+
+            if (existingProject is null)
+                return System.Threading.Tasks.Task.FromResult(new ProjectServiceResponse(false, null, "Project does not exist"));
+
+            dbContext.Projects.Remove(existingProject);
             dbContext.SaveChanges();
 
             return System.Threading.Tasks.Task.FromResult(new ProjectServiceResponse(true));
@@ -47,15 +49,15 @@ namespace TaskMangementApp.Services
             return System.Threading.Tasks.Task.FromResult(new ProjectServiceResponse(true, project));
         }
 
-        public Task<ProjectServiceResponse> UpdateProjectAsync(Guid id, string projectJson)
+        public Task<ProjectServiceResponse> UpdateProjectAsync(Guid id, JsonElement projectJson)
         {
-            Project? project = JsonSerializer.Deserialize<Project>(projectJson);
+            Project? project = null;
+            try { project = JsonSerializer.Deserialize<Project>(projectJson); } catch { }
 
             if (project is null)
                 return System.Threading.Tasks.Task.FromResult(new ProjectServiceResponse(false));
 
-            var ownerExists = dbContext.Users.Any(u => u.Id == project.OwnerId);
-            if (!ownerExists)
+            if (project.OwnerId != Guid.Empty && !dbContext.Users.Any(u => u.Id == project.OwnerId))
                 return System.Threading.Tasks.Task.FromResult(new ProjectServiceResponse(false, null, "Assigned Owner does not exist"));
 
             var existingProject = dbContext.Projects.FirstOrDefault(t => t.Id == id);
@@ -63,7 +65,8 @@ namespace TaskMangementApp.Services
             if (existingProject is null)
                 return System.Threading.Tasks.Task.FromResult(new ProjectServiceResponse(false));
 
-            existingProject = project;
+            project.Id = id;
+            dbContext.Entry(existingProject).CurrentValues.SetValues(project);
             dbContext.SaveChanges();
 
             return System.Threading.Tasks.Task.FromResult(new ProjectServiceResponse(true));

@@ -4,19 +4,17 @@ using System.Text.Json;
 using TaskMangementApp.DB;
 using TaskMangementApp.Models;
 using TaskMangementApp.Services;
+using TaskMangementApp.Services.Interfaces;
 
 namespace TaskMangementApp.Controllers
 {
     [ApiController]
     [Route("api/users")]
-    public class UserController (UserService userService)
+    public class UserController (IUserService userService)
     {
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] string userJson)
+        public async Task<IActionResult> CreateUser([FromBody] JsonElement userJson)
         {
-            if (string.IsNullOrWhiteSpace(userJson))
-                return new BadRequestResult();
-
             var result = await userService.CreateUserAsync(userJson);
 
             if (!result.Success)
@@ -40,11 +38,8 @@ namespace TaskMangementApp.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdateUser(Guid id, [FromBody] string userJson)
+        public async Task<IActionResult> UpdateUser(Guid id, [FromBody] JsonElement userJson)
         {
-            if (string.IsNullOrWhiteSpace(userJson))
-                return new BadRequestResult();
-
             var result = await userService.UpdateUserAsync(id, userJson);
 
             if (!result.Success)
@@ -60,6 +55,9 @@ namespace TaskMangementApp.Controllers
                 return new BadRequestResult();
 
             var result = await userService.DeleteUserAsync(id);
+
+            if (!result.Success)
+                return new NotFoundObjectResult(result.Message);
 
             return new OkResult();
         }

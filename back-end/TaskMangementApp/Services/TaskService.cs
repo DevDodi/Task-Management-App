@@ -31,8 +31,12 @@ namespace TaskMangementApp.Services
 
         public Task<TaskServiceResponse> DeleteTaskAsync(Guid id)
         {
-            var task = new Models.Task { Id = id , Title = ""};
-            dbContext.Tasks.Remove(task);
+            var existingTask = dbContext.Tasks.Find(id);
+
+            if (existingTask is null)
+                return System.Threading.Tasks.Task.FromResult(new TaskServiceResponse(false, null, "Task does not exist"));
+
+            dbContext.Tasks.Remove(existingTask);
             dbContext.SaveChanges();
 
             return Task.FromResult(new TaskServiceResponse(true));
@@ -73,7 +77,8 @@ namespace TaskMangementApp.Services
             if (existingTask is null)
                 return Task.FromResult(new TaskServiceResponse(false));
 
-            existingTask = task;
+            task.Id = id;
+            dbContext.Entry(existingTask).CurrentValues.SetValues(task);
             dbContext.SaveChanges();
 
             return Task.FromResult(new TaskServiceResponse(true));

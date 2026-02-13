@@ -9,9 +9,10 @@ namespace TaskMangementApp.Services
 {
     public class UserService(AppDBContext dbContext) : IUserService
     {
-        public Task<UserServiceResponse> CreateUserAsync(string userJson)
+        public Task<UserServiceResponse> CreateUserAsync(JsonElement userJson)
         {
-            User? user = JsonSerializer.Deserialize<User>(userJson);
+            User? user = null;
+            try { user = JsonSerializer.Deserialize<User>(userJson); } catch { }
 
             if (user is null)
                 return System.Threading.Tasks.Task.FromResult(new UserServiceResponse(false));
@@ -19,8 +20,6 @@ namespace TaskMangementApp.Services
             if (dbContext.Users.Any(u => u.Email == user.Email))
                 return System.Threading.Tasks.Task.FromResult(new UserServiceResponse(false, null, "This email is currently being used by another User."));
         
-            user.Id = user.Id == Guid.Empty ? Guid.NewGuid() : user.Id;
-
             dbContext.Users.Add(user);
             dbContext.SaveChanges();
 
@@ -29,8 +28,12 @@ namespace TaskMangementApp.Services
 
         public Task<UserServiceResponse> DeleteUserAsync(Guid id)
         {
-            var user = new User { Id = id };
-            dbContext.Users.Remove(user);
+            var existingUser = dbContext.Users.Find(id);
+
+            if (existingUser is null)
+                return System.Threading.Tasks.Task.FromResult(new UserServiceResponse(false, null, "User does not exist"));
+
+            dbContext.Users.Remove(existingUser);
             dbContext.SaveChanges();
 
             return System.Threading.Tasks.Task.FromResult(new UserServiceResponse(true));
@@ -46,9 +49,10 @@ namespace TaskMangementApp.Services
             return System.Threading.Tasks.Task.FromResult(new UserServiceResponse(true, user));
         }
 
-        public Task<UserServiceResponse> UpdateUserAsync(Guid id, string userJson)
+        public Task<UserServiceResponse> UpdateUserAsync(Guid id, JsonElement userJson)
         {
-            User? user = JsonSerializer.Deserialize<User>(userJson);
+            User? user = null;
+            try { user = JsonSerializer.Deserialize<User>(userJson); } catch { }
 
             if (user is null)
                 return System.Threading.Tasks.Task.FromResult(new UserServiceResponse(false));
@@ -61,7 +65,8 @@ namespace TaskMangementApp.Services
             if (existingUser is null)
                 return System.Threading.Tasks.Task.FromResult(new UserServiceResponse(false));
 
-            existingUser = user;
+            user.Id = id;
+            dbContext.Entry(existingUser).CurrentValues.SetValues(user);
             dbContext.SaveChanges();
 
             return System.Threading.Tasks.Task.FromResult(new UserServiceResponse(true));

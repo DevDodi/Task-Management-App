@@ -63,7 +63,10 @@ namespace TaskMangementApp.Controllers
             if (id == Guid.Empty)
                 return new BadRequestResult();
 
-            var result = taskService.DeleteTaskAsync(id);
+            var result = await taskService.DeleteTaskAsync(id);
+
+            if (!result.Success)
+                return new NotFoundObjectResult(result.Message);
 
             return new OkResult();
         }

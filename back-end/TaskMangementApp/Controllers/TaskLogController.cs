@@ -2,12 +2,13 @@
 using TaskMangementApp.DB;
 using TaskMangementApp.Models;
 using TaskMangementApp.Services;
+using TaskMangementApp.Services.Interfaces;
 
 namespace TaskMangementApp.Controllers
 {
     [ApiController]
     [Route("api/tasklogs")]
-    public class TaskLogController(TaskLogService taskLogService)
+    public class TaskLogController(ITaskLogService taskLogService)
     {
 
         [HttpGet("{taskId}")]
