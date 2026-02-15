@@ -12,9 +12,18 @@ namespace TaskMangementApp.Controllers
     {
 
         [HttpGet("{taskId}")]
+        [HttpGet("{taskId}/{startDateRange?}/{endDateRange?}")]
         public async Task<ActionResult<List<TaskLog>>> GetTaskLogs(Guid taskId, DateTimeOffset? startDateRange, DateTimeOffset? endDateRange)
         {
-            return null;
+            if (taskId == Guid.Empty)
+                return new BadRequestResult();
+
+            var result = await taskLogService.GetTaskLogsAsync(taskId, startDateRange, endDateRange);
+
+            if (!result.Success)
+                return new BadRequestObjectResult(result.Message);
+
+            return new OkObjectResult(result.TaskLogs);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace TaskMangementApp.Models
         public Guid AssignedProject { get; set; } = Guid.Empty;
 
         [JsonIgnore]
-        public DateTimeOffset LastUpdatedUtc { get; set; } = DateTimeOffset.UtcNow;
+        public DateTime LastUpdatedUtc { get; set; } = DateTime.UtcNow;
     }
 
     public enum TaskState

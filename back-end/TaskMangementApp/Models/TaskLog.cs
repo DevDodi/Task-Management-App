@@ -1,14 +1,17 @@
 ﻿using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace TaskMangementApp.Models
 {
     public class TaskLog
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public LogAction Action { get; set; }
         public Guid TaskId { get; set; }
         public Guid ChangedByUser { get; set; }
-        public DateTimeOffset LastUpdatedUtc { get; set; }
+
+        [JsonIgnore]
+        public DateTime LastUpdatedUtc { get; set; }
     }
 
     public enum LogAction
