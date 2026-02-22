@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -11,6 +12,7 @@ using TaskMangementApp.Services.Interfaces;
 namespace TaskMangementApp.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/tasks")]
     public class TaskController(ITaskService taskService)
     {

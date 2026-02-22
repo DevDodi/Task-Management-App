@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TaskMangementApp.DB;
 using TaskMangementApp.Models;
 using TaskMangementApp.Services;
@@ -7,6 +8,7 @@ using TaskMangementApp.Services.Interfaces;
 namespace TaskMangementApp.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/tasklogs")]
     public class TaskLogController(ITaskLogService taskLogService)
     {

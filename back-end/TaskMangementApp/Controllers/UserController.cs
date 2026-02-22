@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text.Json;
 using TaskMangementApp.DB;
@@ -10,8 +11,10 @@ namespace TaskMangementApp.Controllers
 {
     [ApiController]
     [Route("api/users")]
+    [Authorize]
     public class UserController (IUserService userService)
     {
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] JsonElement userJson)
         {

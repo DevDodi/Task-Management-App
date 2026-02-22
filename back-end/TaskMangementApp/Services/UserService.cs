@@ -2,6 +2,7 @@
 using System.Text.Json;
 using TaskMangementApp.DB;
 using TaskMangementApp.Models;
+using TaskMangementApp.Models.DTOs;
 using TaskMangementApp.Services.Interfaces;
 using TaskMangementApp.Services.Responses;
 
@@ -11,15 +12,22 @@ namespace TaskMangementApp.Services
     {
         public Task<UserServiceResponse> CreateUserAsync(JsonElement userJson)
         {
-            User? user = null;
-            try { user = JsonSerializer.Deserialize<User>(userJson); } catch { }
+            UserDTO? userDTO = null;
+            try { userDTO = JsonSerializer.Deserialize<UserDTO>(userJson); } catch { }
 
-            if (user is null)
+            if (userDTO is null)
                 return System.Threading.Tasks.Task.FromResult(new UserServiceResponse(false));
 
-            if (dbContext.Users.Any(u => u.Email == user.Email))
+            if (dbContext.Users.Any(u => u.Email == userDTO.Email))
                 return System.Threading.Tasks.Task.FromResult(new UserServiceResponse(false, null, "This email is currently being used by another User."));
         
+            var user = new User
+            {
+                Id = userDTO.Id,
+                Email = userDTO.Email,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(userDTO.Password)
+            };
+
             dbContext.Users.Add(user);
             dbContext.SaveChanges();
 
@@ -51,13 +59,13 @@ namespace TaskMangementApp.Services
 
         public Task<UserServiceResponse> UpdateUserAsync(Guid id, JsonElement userJson)
         {
-            User? user = null;
-            try { user = JsonSerializer.Deserialize<User>(userJson); } catch { }
+            UserDTO? userDTO = null;
+            try { userDTO = JsonSerializer.Deserialize<UserDTO>(userJson); } catch { }
 
-            if (user is null)
+            if (userDTO is null)
                 return System.Threading.Tasks.Task.FromResult(new UserServiceResponse(false));
 
-            if (dbContext.Users.Any(u => u.Email == user.Email && u.Id != user.Id))
+            if (dbContext.Users.Any(u => u.Email == userDTO.Email && u.Id != userDTO.Id))
                 return System.Threading.Tasks.Task.FromResult(new UserServiceResponse(false, null, "This email is currently being used by another User."));
 
             var existingUser = dbContext.Users.FirstOrDefault(u => u.Id == id);
@@ -65,7 +73,13 @@ namespace TaskMangementApp.Services
             if (existingUser is null)
                 return System.Threading.Tasks.Task.FromResult(new UserServiceResponse(false));
 
-            user.Id = id;
+            var user = new User
+            {
+                Id = id,
+                Email = userDTO.Email,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(userDTO.Password)
+            };
+
             dbContext.Entry(existingUser).CurrentValues.SetValues(user);
             dbContext.SaveChanges();
 
