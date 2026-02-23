@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using TaskMangementApp.Services.Interfaces;
 namespace TaskMangementApp.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/projects")]
     public class ProjectController(IProjectService projectService)
     {
