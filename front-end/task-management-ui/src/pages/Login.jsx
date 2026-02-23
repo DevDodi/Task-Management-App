@@ -27,7 +27,7 @@ export default function Login() {
 
   return (
     <div className="container">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{ width: "300px" }}>
         <h2 className="header">Login</h2>
         <div className="emailInput">
           <img className = "emailImage" src={emailIcon}></img>

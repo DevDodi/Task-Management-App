@@ -6,6 +6,7 @@
     padding-bottom: 30px;
     border: 2px solid black;
     border-radius: 12px;
+    justify-content: center;
 }
 
 .header{
@@ -15,9 +16,6 @@
     
 }
 
-.loginButton{
-    height: ;
-}
 
 .emailImage{
     width: 20px;
