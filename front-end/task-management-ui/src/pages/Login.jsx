@@ -4,7 +4,6 @@ import { login } from "../api/auth";
 import "./css/Login.css";
 import emailIcon from "../assets/email.png"
 import padlockIcon from "../assets/padlock.png"
-import loginIcon from "../assets/user-interface.png"
 
 
 export default function Login() {
@@ -27,10 +26,11 @@ export default function Login() {
   };
 
   return (
-    <div>
+    <div className="container">
       <form onSubmit={handleSubmit}>
-        <h2>Login</h2>
-        <div >
+        <h2 className="header">Login</h2>
+        <div className="emailInput">
+          <img className = "emailImage" src={emailIcon}></img>
           <label>Email:</label>
           <input
             type="email"
@@ -39,7 +39,8 @@ export default function Login() {
             required
           />
         </div>
-        <div>
+        <div className="passwordInput">
+          <img className = "passwordImage" src={padlockIcon}></img>
           <label>Password:</label>
           <input
             type="password"
@@ -49,7 +50,9 @@ export default function Login() {
           />
         </div>
         {error && <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>}
-        <button type="submit">Login</button>
+        <button className = "loginButton" type="submit">
+          Login
+        </button>
       </form>
     </div>
   );
