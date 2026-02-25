@@ -18,7 +18,7 @@ export default function Login() {
 
     try {
       const data = await login(email, password);
-      localStorage.setItem("token", data.token); // save JWT
+      localStorage.setItem("token", data.AccessToken); // save JWT
       navigate("/projects"); // redirect after login
     } catch (err) {
       setError(err.message);
@@ -31,9 +31,10 @@ export default function Login() {
         <h2 className="header">Login</h2>
         <div className="emailInput">
           <img className = "emailImage" src={emailIcon}></img>
-          <label>Email:</label>
           <input
             type="email"
+            style={{ backgroundColor: "white", color: "black" }}
+            placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -41,17 +42,21 @@ export default function Login() {
         </div>
         <div className="passwordInput">
           <img className = "passwordImage" src={padlockIcon}></img>
-          <label>Password:</label>
           <input
             type="password"
+            style={{ backgroundColor: "white", color: "black" }}
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
-        {error && <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>}
+        <div className="register">
+          <a href="/register">Create Account</a>
+        </div>
+        {error && <div style={{ color: "red" }}>{error}</div>}
         <button className = "loginButton" type="submit">
-          Login
+          Sign in
         </button>
       </form>
     </div>

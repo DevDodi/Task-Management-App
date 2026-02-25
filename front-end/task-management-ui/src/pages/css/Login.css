@@ -12,19 +12,52 @@
 .header{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    
+    align-items: center;   
 }
 
+
+.emailInput{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    color: black;
+}
+
+.passwordInput{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    outline: none;
+    box-shadow: none;
+}
 
 .emailImage{
     width: 20px;
     height: auto;
-    padding: 10px;
+    padding-right: 10px;
 }
 
 .passwordImage{
     width: 20px;
     height: auto;
-    padding: 10px;
+    padding-right: 10px;
+}
+
+.register {
+    margin-top: 10px;
+    margin-right: 10px;
+    display: flex;
+    justify-content:flex-end;
+    font-size: 14px;
+}
+
+.register a {
+    text-decoration: none;
+    color: #007BFF;
+}
+
+.register a:hover {
+    text-decoration: underline;
 }
