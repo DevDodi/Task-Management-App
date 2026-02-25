@@ -22,7 +22,7 @@ namespace TaskMangementApp.Controllers
             var result = await taskService.CreateTaskAsync(taskJson);
 
             if (!result.Success)
-                return new BadRequestObjectResult(result.Message);
+                return new BadRequestObjectResult(new { result.Message });
 
             return new OkResult();
         }
@@ -36,16 +36,16 @@ namespace TaskMangementApp.Controllers
             var result = await taskService.GetTaskAsync(id);
 
             if (!result.Success)
-                return new BadRequestObjectResult(result.Message);
+                return new BadRequestObjectResult(new { result.Message });
 
-            return new OkObjectResult(result.Task);           
+            return new OkObjectResult(new { result.Task });           
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Models.Task>>> GetAllTasks()
         {
             var result = await taskService.GetAllTasksAsync();
-            return new OkObjectResult(result.Tasks);
+            return new OkObjectResult(new { result.Tasks });
         }
 
         [HttpPut("{id}")]
@@ -54,7 +54,7 @@ namespace TaskMangementApp.Controllers
             var result = await taskService.UpdateTaskAsync(id, taskJson);
 
             if (!result.Success)
-                return new BadRequestObjectResult(result.Message);
+                return new BadRequestObjectResult(new { result.Message });
 
             return new OkResult();
         }
@@ -68,7 +68,7 @@ namespace TaskMangementApp.Controllers
             var result = await taskService.DeleteTaskAsync(id);
 
             if (!result.Success)
-                return new NotFoundObjectResult(result.Message);
+                return new NotFoundObjectResult(new { result.Message });
 
             return new OkResult();
         }

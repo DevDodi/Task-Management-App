@@ -1,16 +1,23 @@
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL
 
 export async function login(email, password) {
-  const response = await fetch(`${API_URL}/auth/`, {
+  const response = await fetch(`${API_URL}/auth`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ Email: email, Password: password }),
   });
 
-  if (!response.ok) {
-    const err = await response.json();
-    throw new Error(err.message || "Login failed");
+  let data;
+  if (response.ok) {
+      data = await response.json();
+  } else {
+      try {
+          const err = await response.json();
+          throw new Error(err.Message || "Login failed");
+      } catch {
+          throw new Error("Login failed"); // fallback
+      }
   }
 
-  return response.json(); // { token, user }
+  return data; // { User, AccessToken, ExpiresIn }
 }

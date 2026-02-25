@@ -23,9 +23,9 @@ namespace TaskMangementApp.Controllers
             var result = await taskLogService.GetTaskLogsAsync(taskId, startDateRange, endDateRange);
 
             if (!result.Success)
-                return new BadRequestObjectResult(result.Message);
+                return new BadRequestObjectResult(new { result.Message });
 
-            return new OkObjectResult(result.TaskLogs);
+            return new OkObjectResult(new { result.TaskLogs });
         }
     }
 }

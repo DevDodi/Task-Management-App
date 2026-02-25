@@ -21,7 +21,7 @@ namespace TaskMangementApp.Controllers
             var result = await projectService.CreateProjectAsync(projectJson);
 
             if (!result.Success)
-                return new BadRequestObjectResult(result.Message);
+                return new BadRequestObjectResult(new { result.Message });
             
             return new OkResult();
         }
@@ -36,9 +36,9 @@ namespace TaskMangementApp.Controllers
             var result = await projectService.GetProjectAsync(id);
 
             if (!result.Success)
-                return new BadRequestObjectResult(result.Message);
+                return new BadRequestObjectResult(new { result.Message });
 
-            return new OkObjectResult(result.Project);   
+            return new OkObjectResult(new { result.Project });   
         }
 
         [HttpPatch("{id}")]
@@ -47,7 +47,7 @@ namespace TaskMangementApp.Controllers
             var result = await projectService.UpdateProjectAsync(id, projectJson);
 
             if (!result.Success)
-                return new BadRequestObjectResult(result.Message);
+                return new BadRequestObjectResult(new { result.Message });
 
             return new OkResult();            
         }
@@ -61,7 +61,7 @@ namespace TaskMangementApp.Controllers
             var result = await projectService.DeleteProjectAsync(id);
 
             if (!result.Success)
-                return new NotFoundObjectResult(result.Message);
+                return new NotFoundObjectResult(new { result.Message });
 
             return new OkResult();       
         }

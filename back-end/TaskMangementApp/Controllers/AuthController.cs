@@ -19,7 +19,7 @@ namespace TaskMangementApp.Controllers
             if (!result.Success)
                 return new UnauthorizedObjectResult(result.Message);
 
-            return new OkObjectResult(result.AccessToken);
+            return new OkObjectResult(new { result.AccessToken });
         }
     }
 }
