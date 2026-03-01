@@ -1,26 +1,28 @@
+import axios from 'axios';
 const API_URL = import.meta.env.VITE_API_URL
 
-export async function apiFetch(endpoint, options = {}) {
+const apiClient = axios.create({
+  baseURL: API_URL,
+  headers: { "Content-Type": "application/json" },
+});
+
+// request interceptor - adds JWT to every request
+apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
 
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token ? `Bearer ${token}` : "",
-      ...options.headers,
-    },
-  });
-
-  if (!response.ok) {
-    if (response.status === 401) {
+// response interceptor - handles errors globally
+apiClient.interceptors.response.use(
+  (response) => response.data ?? null,
+  async (error) => {
+    if (error.response?.status === 401) {
       localStorage.removeItem("token");
       window.location.href = "/login";
     }
 
-    const error = await response.json().catch(() => ({}));
-    throw new Error(error.Message || "Something went wrong");
+    const message = error.response?.data?.Message || "Something went wrong";
+    throw new Error(message);
   }
-
-  return response.json();
-}
+);
