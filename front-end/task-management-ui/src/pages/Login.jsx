@@ -54,7 +54,7 @@ export default function Login() {
         <div className="register">
           <a href="/register">Create Account</a>
         </div>
-        {error && <div style={{ color: "red" }}>{error}</div>}
+        {error && <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>}
         <button className = "loginButton" type="submit">
           Sign in
         </button>
