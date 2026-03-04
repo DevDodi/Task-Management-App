@@ -4,7 +4,8 @@ import "./css/Register.css";
 import emailIcon from "../assets/email.png"
 import padlockIcon from "../assets/padlock.png"
 import {createUser} from "../api/users.api.js"
-import AuthenticationForm from "../components/AuthentiationForm.jsx";
+import AuthenticationForm from "../components/AuthentiationForm";
+import Input from "../components/Input";
 
 
 export default function Register() {
@@ -32,8 +33,7 @@ export default function Register() {
   };
 
   return (
-    <AuthenticationForm title="Register" onSubmit={handleSubmit} error={error} buttonText="Create Account">
-        <h2 className="header">Register</h2>
+    <AuthenticationForm header="Register" onSubmit={handleSubmit} error={error} buttonText="Create Account">
         <Input
           type="email"
           style={{ backgroundColor: "white", color: "black" }}

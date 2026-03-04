@@ -1,3 +1,5 @@
+import "../pages/css/Login.css";
+import "../pages/css/Register.css";
 
 export default function Input({ label, icon, iconClassName, type, placeholder, value, onChange }) {
 

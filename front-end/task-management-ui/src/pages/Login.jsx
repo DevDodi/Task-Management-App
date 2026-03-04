@@ -33,7 +33,7 @@ export default function Login() {
   };
 
   return (
-    <AuthenticationForm title="Login" onSubmit={handleSubmit} error={error} buttonText="Sign in">
+    <AuthenticationForm header="Login" onSubmit={handleSubmit} error={error} buttonText="Sign in">
       <Input
         type="email"
         style={{ backgroundColor: "white", color: "black" }}
