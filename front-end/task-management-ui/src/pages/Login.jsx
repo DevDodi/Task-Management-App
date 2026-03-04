@@ -4,6 +4,8 @@ import { login } from "../api/auth";
 import "./css/Login.css";
 import emailIcon from "../assets/email.png"
 import padlockIcon from "../assets/padlock.png"
+import AuthenticationForm from "../components/AuthentiationForm";
+import Input from "../components/Input";
 
 
 export default function Login() {
@@ -11,6 +13,11 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  
+  const isLoggedIn = localStorage.getItem("token");
+  if (isLoggedIn) {
+    navigate("/projects");
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,39 +33,30 @@ export default function Login() {
   };
 
   return (
-    <div className="container">
-      <form onSubmit={handleSubmit} style={{ width: "300px" }}>
-        <h2 className="header">Login</h2>
-        <div className="emailInput">
-          <img className = "emailImage" src={emailIcon}></img>
-          <input
-            type="email"
-            style={{ backgroundColor: "white", color: "black" }}
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="passwordInput">
-          <img className = "passwordImage" src={padlockIcon}></img>
-          <input
-            type="password"
-            style={{ backgroundColor: "white", color: "black" }}
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <div className="register">
-          <a href="/register">Create Account</a>
-        </div>
-        {error && <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>}
-        <button className = "loginButton" type="submit">
-          Sign in
-        </button>
-      </form>
-    </div>
+    <AuthenticationForm title="Login" onSubmit={handleSubmit} error={error} buttonText="Sign in">
+      <Input
+        type="email"
+        style={{ backgroundColor: "white", color: "black" }}
+        placeholder="Email"
+        value={email}
+        icon = {emailIcon}
+        iconClassName = "emailImage"
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <Input
+        type="password"
+        style={{ backgroundColor: "white", color: "black" }}
+        placeholder="Password"
+        value={password}
+        icon = {padlockIcon}
+        iconClassName = "passwordImage"
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+      <div className="register">
+        <a href="/register">Create Account</a>
+      </div>
+    </AuthenticationForm>
   );
 }
