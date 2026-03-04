@@ -1,4 +1,4 @@
-import { apiClient } from '../httpClient.js';
+import { apiClient } from './httpClient.js';
 
 export async function getProjectById(id) {
   return apiClient.get(`/projects/${id}`);
