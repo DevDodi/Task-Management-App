@@ -1,0 +1,29 @@
+.banner{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: grey;
+    color: black;
+    width: 100% ;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+.logo{
+    width: 40px;
+    height: auto;
+}
+
+.appName{
+    font-size: 24px;
+    margin-left: 5px;
+}
+
+.authLink {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    margin-right: 20px;
+}
