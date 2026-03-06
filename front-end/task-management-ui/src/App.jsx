@@ -2,18 +2,33 @@ import { useState } from 'react'
 import Login from "./pages/Login";
 import Projects from "./pages/Projects";
 import Register from "./pages/Register";
+import Banner from "./components/Banner";
+import RequireAuth from "./components/RequireAuth";
 import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [token, setToken] = useState(() => {
+    const token = localStorage.getItem("token");
+    return token;
+  });
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+  };
 
   return (
-    <BrowserRouter>
+    <BrowserRouter> 
+    <Banner header="Task Management App" name="Task Management App" loggedIn={!!token} onSignOut={handleSignOut} />
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login /> } />
         <Route path="/register" element={<Register />} />
-        <Route path="/projects" element={<Projects />} />
+        <Route path="/projects" element={
+          <RequireAuth>
+            <Projects />
+          </RequireAuth> } 
+        />
         <Route path="*" element={<Login />} />
       </Routes>
     </BrowserRouter>    
