@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api/auth";
 import "./css/Login.css";
@@ -14,10 +14,12 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   
-  const isLoggedIn = localStorage.getItem("token");
-  if (isLoggedIn) {
-    navigate("/projects");
-  }
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("token");
+    if (isLoggedIn) {
+      navigate("/projects");
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +27,7 @@ export default function Login() {
 
     try {
       const data = await login(email, password);
-      localStorage.setItem("token", data.AccessToken); // save JWT
+      localStorage.setItem("token", data.accessToken); // save JWT
       navigate("/projects"); // redirect after login
     } catch (err) {
       setError(err.message);
@@ -55,7 +57,7 @@ export default function Login() {
         required
       />
       <div className="register">
-        <a href="/register">Create Account</a>
+        <a href="/register">Create Account?</a>
       </div>
     </AuthenticationForm>
   );
