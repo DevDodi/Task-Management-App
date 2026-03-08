@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using System.Text.Json;
 using TaskMangementApp.DB;
 using TaskMangementApp.Models;
@@ -47,6 +48,12 @@ namespace TaskMangementApp.Services
                 return System.Threading.Tasks.Task.FromResult(new ProjectServiceResponse(false));
 
             return System.Threading.Tasks.Task.FromResult(new ProjectServiceResponse(true, project));
+        }
+
+        public Task<ProjectServiceResponseList> GetProjectsAsync()
+        {
+            var projects = dbContext.Projects.ToList();
+            return System.Threading.Tasks.Task.FromResult(new ProjectServiceResponseList(true, projects));
         }
 
         public Task<ProjectServiceResponse> UpdateProjectAsync(Guid id, JsonElement projectJson)

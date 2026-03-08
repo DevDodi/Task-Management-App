@@ -41,6 +41,13 @@ namespace TaskMangementApp.Controllers
             return new OkObjectResult(new { result.Project });   
         }
 
+        [HttpGet()]
+        public async Task<ActionResult<Project>> GetProjectsAsync()
+        {
+            var result = await projectService.GetProjectsAsync();
+            return new OkObjectResult(new { result.Projects });
+        }
+
         [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateProject(Guid id, [FromBody] JsonElement projectJson)
         {
