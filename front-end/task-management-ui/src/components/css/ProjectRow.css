@@ -1,0 +1,42 @@
+.rowContainer{
+    display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: gray;
+  border-bottom: 1px solid #e5e5e5;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.rowContainer:last-child {
+  border-bottom: none;
+}
+
+.rowContainer:hover {
+  background: dimgray;
+}
+
+.rowContainerInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.rowContainerName {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+
+.rowContainerDate {
+  font-size: 12px;
+  white-space: nowrap;
+  margin-left: 24px;
+}
+
+.rowContainerDescription {
+  font-size: 13px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
