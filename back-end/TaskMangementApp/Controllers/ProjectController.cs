@@ -7,6 +7,7 @@ using TaskMangementApp.DB;
 using TaskMangementApp.Models;
 using TaskMangementApp.Services;
 using TaskMangementApp.Services.Interfaces;
+using static TaskMangementApp.Models.Project;
 
 namespace TaskMangementApp.Controllers
 {
@@ -42,9 +43,13 @@ namespace TaskMangementApp.Controllers
         }
 
         [HttpGet()]
-        public async Task<ActionResult<Project>> GetProjectsAsync()
+        public async Task<ActionResult<Project>> GetProjectsAsync([FromQuery] bool unassigned = false, [FromQuery] Guid? ownerId = null)
         {
-            var result = await projectService.GetProjectsAsync();
+            var result = await projectService.GetProjectsAsync(unassigned, ownerId);
+
+            if (!result.Success)
+                return new BadRequestObjectResult(new { result.Message });
+
             return new OkObjectResult(new { result.Projects });
         }
 

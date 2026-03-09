@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Text.Json;
 using TaskMangementApp.DB;
 using TaskMangementApp.Models;
 using TaskMangementApp.Services.Interfaces;
 using TaskMangementApp.Services.Responses;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static TaskMangementApp.Models.Project;
 
 namespace TaskMangementApp.Services
 {
@@ -50,9 +53,20 @@ namespace TaskMangementApp.Services
             return System.Threading.Tasks.Task.FromResult(new ProjectServiceResponse(true, project));
         }
 
-        public Task<ProjectServiceResponseList> GetProjectsAsync()
+        public Task<ProjectServiceResponseList> GetProjectsAsync(bool unassigned, Guid? ownerId = null)
         {
-            var projects = dbContext.Projects.ToList();
+            if (unassigned && ownerId.HasValue)
+                return System.Threading.Tasks.Task.FromResult(new ProjectServiceResponseList(false, null, "Cannot combine unassigned and ownerId."));
+
+            var projectsQuery = dbContext.Projects.AsQueryable();
+
+            if (unassigned)
+                projectsQuery = projectsQuery.Where(p => p.OwnerId == Guid.Empty);
+            else if (ownerId.HasValue)
+                projectsQuery = projectsQuery.Where(p => p.OwnerId == ownerId.Value);
+
+            var projects = projectsQuery.ToList();
+
             return System.Threading.Tasks.Task.FromResult(new ProjectServiceResponseList(true, projects));
         }
 

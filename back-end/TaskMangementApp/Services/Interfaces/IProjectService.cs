@@ -2,6 +2,7 @@
 using System.Text.Json;
 using TaskMangementApp.Models;
 using TaskMangementApp.Services.Responses;
+using static TaskMangementApp.Models.Project;
 
 namespace TaskMangementApp.Services.Interfaces
 {
@@ -9,7 +10,7 @@ namespace TaskMangementApp.Services.Interfaces
     {
         Task<ProjectServiceResponse> CreateProjectAsync(JsonElement projectJson);
         Task<ProjectServiceResponse> GetProjectAsync(Guid id);
-        Task<ProjectServiceResponseList> GetProjectsAsync();
+        Task<ProjectServiceResponseList> GetProjectsAsync(bool unassigned, Guid? ownerId);
         Task<ProjectServiceResponse> UpdateProjectAsync(Guid id, JsonElement projectJson);
         Task<ProjectServiceResponse> DeleteProjectAsync(Guid id);
     }
