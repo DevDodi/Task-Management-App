@@ -1,7 +1,7 @@
 import { useState, useEffect, use } from "react";
 import { useNavigate } from "react-router-dom";
 import "./css/Projects.css";
-import {createProject, getProjects} from "../api/projects.api.js"
+import {createProject, getOwnedByProjects, getUnassignedProjects} from "../api/projects.api.js"
 import ProjectRow from "../components/ProjectRow";
 import Modal from "../components/Modal";
 
@@ -10,10 +10,14 @@ export default function Projects() {
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const [projects, setProjects] = useState([]);
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+
+    const userId = localStorage.getItem("userId");
 
     useEffect(() => {
         const fetchProjects = async () => {
-            const response = await getProjects();
+            const response = await getOwnedByProjects(userId);
             setProjects(response.projects);
         };
         fetchProjects();
@@ -25,7 +29,7 @@ export default function Projects() {
 
     const handleCreate = async () => {
         const projectId = crypto.randomUUID();
-        const response = await createProject({Id: projectId, Name: title, Description: description});
+        const response = await createProject({Id: projectId, Name: title, Description: description, OwnerId: userId});
         setShowModal(false);
         navigate(`/project/${projectId}`);
     }
@@ -35,7 +39,7 @@ export default function Projects() {
     return (
         <div className="projectsContainer">
             <div className="projectsHeader">
-                <h1 className="projectsTitle">Projects</h1>
+                <h1 className="projectsTitle"> My Projects</h1>
                 <button className="createProjectButton" onClick={() => setShowModal(true)}>
                     Create Project
                 </button>

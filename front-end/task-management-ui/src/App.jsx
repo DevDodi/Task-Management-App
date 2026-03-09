@@ -15,6 +15,7 @@ function App() {
 
   const handleSignOut = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     setToken(null);
   };
 

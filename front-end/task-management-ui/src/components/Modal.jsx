@@ -1,6 +1,6 @@
 import "./css/Modal.css";
 
-export default function Modal({title, children, onClickOutside, OnClickAction}) {
+export default function Modal({title, children, onClickOutside, onClickAction}) {
 
     return(
         <div className="modalContainer" onClick={onClickOutside}>
@@ -13,7 +13,7 @@ export default function Modal({title, children, onClickOutside, OnClickAction}) 
                 </div>  
                 {children}
                 <div className="modalActionButton">
-                    <button className="modalConfirmButton" onClick={OnClickAction}>
+                    <button className="modalConfirmButton" onClick={onClickAction}>
                         Confirm
                     </button>
                 </div>

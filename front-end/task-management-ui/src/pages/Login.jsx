@@ -28,6 +28,7 @@ export default function Login() {
     try {
       const data = await login(email, password);
       localStorage.setItem("token", data.accessToken); // save JWT
+      localStorage.setItem("userId", data.userId); // save user ID
       navigate("/projects"); // redirect after login
     } catch (err) {
       setError(err.message);
