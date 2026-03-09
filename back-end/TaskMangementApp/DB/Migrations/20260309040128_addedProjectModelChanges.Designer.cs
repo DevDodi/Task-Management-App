@@ -11,8 +11,8 @@ using TaskMangementApp.DB;
 namespace TaskMangementApp.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20260215062435_changeDateTimeOffsetToDateTime")]
-    partial class changeDateTimeOffsetToDateTime
+    [Migration("20260309040128_addedProjectModelChanges")]
+    partial class addedProjectModelChanges
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,12 +26,18 @@ namespace TaskMangementApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 

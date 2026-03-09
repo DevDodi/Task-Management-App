@@ -32,7 +32,7 @@ namespace TaskMangementApp.Migrations
                     Action = table.Column<int>(type: "INTEGER", nullable: false),
                     TaskId = table.Column<Guid>(type: "TEXT", nullable: false),
                     ChangedByUser = table.Column<Guid>(type: "TEXT", nullable: false),
-                    LastUpdatedUtc = table.Column<DateTimeOffset>(type: "TEXT", nullable: false)
+                    LastUpdatedUtc = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -49,7 +49,7 @@ namespace TaskMangementApp.Migrations
                     Status = table.Column<int>(type: "INTEGER", nullable: false),
                     AssignedUser = table.Column<Guid>(type: "TEXT", nullable: false),
                     AssignedProject = table.Column<Guid>(type: "TEXT", nullable: false),
-                    LastUpdatedUtc = table.Column<DateTimeOffset>(type: "TEXT", nullable: false)
+                    LastUpdatedUtc = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
