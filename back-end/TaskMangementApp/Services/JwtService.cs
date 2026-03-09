@@ -55,7 +55,7 @@ namespace TaskMangementApp.Services
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
             var accessToken = tokenHandler.WriteToken(securityToken);
 
-            return System.Threading.Tasks.Task.FromResult(new JwtServiceResponse(true, matchingUser, accessToken, expiresIn));
+            return System.Threading.Tasks.Task.FromResult(new JwtServiceResponse(true, matchingUser.Id, accessToken, expiresIn));
         }
     }
 }
