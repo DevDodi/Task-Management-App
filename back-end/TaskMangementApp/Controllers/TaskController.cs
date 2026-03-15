@@ -41,10 +41,10 @@ namespace TaskMangementApp.Controllers
             return new OkObjectResult(new { result.Task });           
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<Models.Task>>> GetAllTasks()
+        [HttpGet()]
+        public async Task<ActionResult<List<Models.Task>>> GetTasks([FromQuery] Guid? projectId = null)
         {
-            var result = await taskService.GetAllTasksAsync();
+            var result = await taskService.GetTasksAsync(projectId);
             return new OkObjectResult(new { result.Tasks });
         }
 

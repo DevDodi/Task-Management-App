@@ -42,15 +42,21 @@ namespace TaskMangementApp.Services
             return Task.FromResult(new TaskServiceResponse(true));
         }
 
-        public Task<TaskServiceResponseList> GetAllTasksAsync()
+        public Task<TaskServiceResponseList> GetTasksAsync(Guid? projectId)
         {
-            var tasks = dbContext.Tasks.ToList();
-            return Task.FromResult(new TaskServiceResponseList(true, tasks));
+            var assignedTasks = new List<Models.Task>();
+
+            if (projectId.HasValue && projectId != Guid.Empty)
+                assignedTasks = dbContext.Tasks.Where(t => t.AssignedProject == projectId).ToList();
+            else
+                assignedTasks = dbContext.Tasks.ToList();
+
+            return Task.FromResult(new TaskServiceResponseList(true, assignedTasks));
         }
 
-        public Task<TaskServiceResponse> GetTaskAsync(Guid id)
+        public Task<TaskServiceResponse> GetTaskAsync(Guid taskId)
         {
-            var task = dbContext.Tasks.Find(id);
+            var task = dbContext.Tasks.Find(taskId);
 
             if (task is null)
                 return Task.FromResult(new TaskServiceResponse(false));
