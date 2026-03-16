@@ -60,8 +60,9 @@ export default function ProjectDetails() {
             <div className="detailsHeader">
                 <div className="detailsTitle">
                     <h1 style={{fontSize: "24px"}}>
-                        My Projects / 
+                        My Projects
                     </h1>
+                    <h1 className="titleSeperator">/</h1>
                     <h1 className="projectName">
                         {selectedProject === null ? id : selectedProject.name}
                     </h1>
@@ -82,7 +83,7 @@ export default function ProjectDetails() {
                             key={task.id}
                             name={task.title}
                             description={task.description ?? ""}
-                            assignee={task.assignedUser}
+                            assignee= "Alice"
                             status={task.status}
                             onClick={() => setSelectedTask(task)}
                             onEdit={() => setShowEditModal(true)}
@@ -92,10 +93,21 @@ export default function ProjectDetails() {
 
                 {selectedTask && (
                     <div className="auditContainer">
-                        <p>Selected Task</p>
-                        {auditLogs.map((log) => (
-                            []
-                        ))}
+                        <div className="auditHeader">
+                            <p className="auditHeader-label">Selected Task</p>
+                            <p className="auditHeader-title">{selectedTask.title}</p>
+                        </div>
+                        <div className="auditLogs">
+                            <p className="auditLogs-label">Audit Log</p>
+                            <div className="auditLogs-items">
+                                {auditLogs.map((log, index) => (
+                                    <div key={index} className="auditLogs-item">
+                                        <span className="auditLogs-item-time">time</span>
+                                        <p className="auditLogs-item-text">descrip</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>

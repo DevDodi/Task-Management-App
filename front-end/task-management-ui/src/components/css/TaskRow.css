@@ -1,8 +1,8 @@
 .rowContainer{
-    display: flex;
+  display: grid;
   align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
+  grid-template-columns: 2fr 1fr 1fr 36px;
+  padding: 14px 16px;
   background: gray;
   border-bottom: 1px solid #e5e5e5;
   cursor: pointer;
@@ -17,36 +17,42 @@
 }
 
 .rowContainerInfo {
-  flex: 1;
   min-width: 0;
 }
 
 .rowContainerName {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
-  margin: 0 0 4px 0;
+  margin: 0 0 3px;
 }
 
-.rowContainerAssignee {
+.rowContainerDescription {
   font-size: 12px;
-  white-space: nowrap;
-  margin-left: 24px;
-}
-
-.rowContainerStatus {
-  font-size: 13px;
+  color: #555;
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.roweditButton {
+.rowContainerAssignee {
+  font-size: 13px;
+  color: #555;
+}
+
+
+.rowEditButton {
   background: none;
   border: none;
   cursor: pointer;
-  width: 16px;
-  height: 16px;
-  background-size: contain;
-  background-repeat: no-repeat;
+  font-size: 15px;
+  color: dimgray;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.15s ease, background 0.15s ease;
+  justify-self: center;
+}
+
+.rowEditButton:hover {
+  color: black;
 }
