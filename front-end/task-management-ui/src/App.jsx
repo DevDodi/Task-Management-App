@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Login from "./pages/Login";
 import Projects from "./pages/Projects";
 import Register from "./pages/Register";
+import ProjectDetails from "./pages/ProjectDetails";
 import Banner from "./components/Banner";
 import RequireAuth from "./components/RequireAuth";
 import './App.css'
@@ -28,6 +29,11 @@ function App() {
         <Route path="/projects" element={
           <RequireAuth>
             <Projects />
+          </RequireAuth> } 
+        />
+        <Route path="/projects/:id" element={
+          <RequireAuth>
+            <ProjectDetails />
           </RequireAuth> } 
         />
         <Route path="*" element={<Login />} />

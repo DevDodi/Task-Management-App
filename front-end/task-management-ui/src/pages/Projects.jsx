@@ -24,14 +24,14 @@ export default function Projects() {
     }, []); 
 
     const onRowClick = (id) => {
-        navigate(`/project/${id}`);
+        navigate(`/projects/${id}`);
     }
 
     const handleCreate = async () => {
         const projectId = crypto.randomUUID();
         const response = await createProject({Id: projectId, Name: title, Description: description, OwnerId: userId});
         setShowModal(false);
-        navigate(`/project/${projectId}`);
+        navigate(`/projects/${projectId}`);
     }
 
 
@@ -51,6 +51,7 @@ export default function Projects() {
                 </div>
                 {projects.map((project) => (
                     <ProjectRow
+                        key={project.id}
                         name={project.name}
                         description={project.description}
                         createdAt={project.createdAt}
