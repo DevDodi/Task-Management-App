@@ -56,3 +56,31 @@
 .rowEditButton:hover {
   color: black;
 }
+
+.badge {
+  display: inline-block;
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+ 
+.badge--warning {
+  background: #fff7e6;
+  color: #b45309;
+}
+ 
+.badge--danger {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+ 
+.badge--success {
+  background: #f0fdf4;
+  color: #15803d;
+}
+ 
+.badge--neutral {
+  background: #f5f5f5;
+  color: #666;
+}

@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import {getProjectById} from "../api/projects.api.js"
-import {getProjectTasks} from "../api/tasks.api.js"
+import { useParams } from "react-router-dom";
+import { getProjectById } from "../api/projects.api.js";
+import { getProjectTasks } from "../api/tasks.api.js";
+import { getUser } from "../api/users.api.js";
 import Modal from "../components/Modal";
 import TaskRow from "../components/TaskRow";
 import "./css/ProjectDetails.css";
@@ -28,7 +29,24 @@ export default function ProjectDetails() {
                 setSelectedProject(response.project);
 
                 response = await getProjectTasks(response.project.id);
-                setTasks(response.tasks);
+                const tasksWithExtras = await Promise.all(
+                    (response.tasks ?? []).map(async (task) => {
+                        let assigneeEmail = "Unassigned";
+                        if (task.assignedUser) {
+                            try {
+                                const user = await getUser(task.assignedUser);
+                                assigneeEmail = user?.email ?? assigneeEmail;
+                            } catch { /* eat exception and keep default*/}
+                        }
+
+                        return {
+                            ...task,
+                            assigneeEmail,
+                        };
+                    })
+                );
+
+                setTasks(tasksWithExtras);
             } catch (err) {
                 setError("Error fetching project and tasks");
             } finally {
@@ -83,7 +101,7 @@ export default function ProjectDetails() {
                             key={task.id}
                             name={task.title}
                             description={task.description ?? ""}
-                            assignee= "Alice"
+                            assignee={task.assigneeEmail}
                             status={task.status}
                             onClick={() => setSelectedTask(task)}
                             onEdit={() => setShowEditModal(true)}
