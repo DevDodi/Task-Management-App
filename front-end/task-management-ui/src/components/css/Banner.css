@@ -1,8 +1,8 @@
 .banner{
     display: flex;
     align-items: center;
-    background-color: dimgray;
-    color: black;
+    background-color: #0F3221;
+    color: #FFF4E2;
     width: 100% ;
     position: fixed;
     top: 0;
@@ -22,7 +22,8 @@
 }
 
 .authLink {
-    color: #fff;
+    background-color: #FFF4E2;
+    color: #0F3221;
     text-decoration: none;
     font-size: 14px;
     margin-right: 20px;

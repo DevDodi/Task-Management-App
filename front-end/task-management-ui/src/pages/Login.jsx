@@ -39,7 +39,7 @@ export default function Login() {
     <AuthenticationForm header="Login" onSubmit={handleSubmit} error={error} buttonText="Sign in">
       <Input
         type="email"
-        style={{ backgroundColor: "white", color: "black" }}
+        style={{ backgroundColor: "#FFF4e2", color: "black" }}
         placeholder="Email"
         value={email}
         icon = {emailIcon}
@@ -49,7 +49,7 @@ export default function Login() {
       />
       <Input
         type="password"
-        style={{ backgroundColor: "white", color: "black" }}
+        style={{ backgroundColor: "#FFF4e2", color: "black" }}
         placeholder="Password"
         value={password}
         icon = {padlockIcon}
