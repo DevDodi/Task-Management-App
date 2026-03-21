@@ -55,6 +55,13 @@
 
 .rowEditButton:hover {
   color: black;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.rowEditButton img {
+  width: 16px;
+  height: 16px;
+  display: block;
 }
 
 .badge {

@@ -46,7 +46,7 @@ export default function Register() {
         />
         <Input
           type="password"
-          style={{ backgroundColor: "white", color: "black" }}
+          style={{ backgroundColor: "#FFF4e2", color: "black" }}
           placeholder="Password"
           value={password}
           icon = {padlockIcon}
@@ -56,7 +56,7 @@ export default function Register() {
         />
         <Input
           type="password"
-          style={{ backgroundColor: "white", color: "black" }}
+          style={{ backgroundColor: "#FFF4e2", color: "black" }}
           placeholder="Confirm Password"
           value={confirmPassword}
           icon = {padlockIcon}
