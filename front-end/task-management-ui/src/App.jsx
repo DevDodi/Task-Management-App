@@ -24,7 +24,7 @@ function App() {
     <BrowserRouter> 
     <Banner header="Task Management App" name="Task Management App" loggedIn={!!token} onSignOut={handleSignOut} />
       <Routes>
-        <Route path="/login" element={<Login /> } />
+        <Route path="/login" element={<Login onLogin={setToken} /> } />
         <Route path="/register" element={<Register />} />
         <Route path="/projects" element={
           <RequireAuth>

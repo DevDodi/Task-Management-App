@@ -14,11 +14,17 @@ export default function Banner({ header, logo, name, loggedIn, onSignOut }) {
 
     const authText = loggedIn === true ? "Sign Out" : "Sign In";
 
+    const handleProjectsClick = () => {
+        navigate("/projects");
+    };
+
     return(
         <header className="banner">
-            <img className="logo" src={logo} alt={name} />
-            <h1 className="appName">{header}</h1>
-            <h3>Projects</h3>
+            <div className="bannerLeft">
+                <img className="logo" src={logo} alt={name} />
+                <h1 className="appName" onClick={handleProjectsClick}>{header}</h1>
+                <h3 className="projectsLink" onClick={handleProjectsClick}>Projects</h3>
+            </div>
             <button onClick={handleAuthClick} className="authLink">
                 {authText}
             </button>

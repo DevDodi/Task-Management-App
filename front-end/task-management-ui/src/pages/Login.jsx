@@ -8,7 +8,7 @@ import AuthenticationForm from "../components/AuthentiationForm";
 import Input from "../components/Input";
 
 
-export default function Login() {
+export default function Login({ onLogin }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,6 +29,7 @@ export default function Login() {
       const data = await login(email, password);
       localStorage.setItem("token", data.accessToken); // save JWT
       localStorage.setItem("userId", data.userId); // save user ID
+      onLogin?.(data.accessToken);
       navigate("/projects"); // redirect after login
     } catch (err) {
       setError(err.message);
