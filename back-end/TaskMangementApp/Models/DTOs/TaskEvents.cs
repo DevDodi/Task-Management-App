@@ -1,0 +1,29 @@
+﻿using TaskMangementApp.Models.DTOs;
+
+namespace TaskMangementApp.Models.Events
+{
+    public abstract class TaskEventBase : ITaskEvent
+    {
+        public Guid TaskId { get; set; } = Guid.Empty;
+        public Guid UpdatedById { get; set; } = Guid.Empty;
+        public string UpdatedByName { get; set; } = string.Empty;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    }
+
+
+    public class TaskUpdatedEvent : TaskEventBase
+    {
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+    }
+
+    public class TaskStatusChangedEvent : TaskEventBase
+    {
+        public TaskState TaskState { get; set; }
+    }
+
+    public class TaskAssignedEvent : TaskEventBase
+    {
+        public Guid AssignedUser { get; set; }
+    }
+}
