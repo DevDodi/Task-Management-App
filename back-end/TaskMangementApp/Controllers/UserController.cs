@@ -12,7 +12,7 @@ namespace TaskMangementApp.Controllers
     [ApiController]
     [Route("api/users")]
     [Authorize]
-    public class UserController (IUserService userService)
+    public class UserController (IUserService userService) : ControllerBase
     {
         [AllowAnonymous]
         [HttpPost]

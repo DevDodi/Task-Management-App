@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TaskMangementApp.DB;
+using TaskMangementApp.Events;
+using TaskMangementApp.Events.Interfaces;
 using TaskMangementApp.Services;
 using TaskMangementApp.Services.Interfaces;
 
@@ -15,6 +17,9 @@ builder.Services.AddScoped<ITaskLogService, TaskLogService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IJwtSevice, JwtService>();
+
+builder.Services.AddScoped<IEventHandler, TaskLogEventHandler>();
+builder.Services.AddScoped<IEventPublisher, EventPublisher>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
     {

@@ -7,6 +7,7 @@ namespace TaskMangementApp.Models
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public LogAction Action { get; set; }
+        public string Message { get; set; } = string.Empty;
         public Guid TaskId { get; set; }
         public Guid ChangedByUser { get; set; }
 

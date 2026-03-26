@@ -14,7 +14,7 @@ namespace TaskMangementApp.Controllers
     [ApiController]
     [Authorize]
     [Route("api/projects")]
-    public class ProjectController(IProjectService projectService)
+    public class ProjectController(IProjectService projectService) : ControllerBase
     {
         [HttpPost]
         public async Task<IActionResult> CreateProject([FromBody] JsonElement projectJson)

@@ -1,17 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Text.Json;
 using TaskMangementApp.DB;
+using TaskMangementApp.Events.Interfaces;
+using TaskMangementApp.Models.DTOs;
+using TaskMangementApp.Models.Events;
 using TaskMangementApp.Services.Interfaces;
 using TaskMangementApp.Services.Responses;
 
 namespace TaskMangementApp.Services
 {
-    public class TaskService(AppDBContext dbContext) : ITaskService
+    public class TaskService(AppDBContext dbContext, IEventPublisher eventPublisher) : ITaskService
     {
-        public Task<TaskServiceResponse> CreateTaskAsync(JsonElement taskJson)
+        public Task<TaskServiceResponse> CreateTaskAsync(Guid userId, JsonElement taskJson)
         {
             Models.Task? task = null;
+            List<ITaskEvent> events = new List<ITaskEvent>();
+
             try { task = JsonSerializer.Deserialize<Models.Task>(taskJson); } catch { }
 
             if (task is null)
@@ -24,12 +29,22 @@ namespace TaskMangementApp.Services
                 return Task.FromResult(new TaskServiceResponse(false, null, "Assigned Project does not exist"));
 
             dbContext.Tasks.Add(task);
+            events.Add(new TaskCreatedEvent
+            {
+                TaskId = task.Id,
+                Title = task.Title,
+                UpdatedById = userId,
+                UpdatedByEmail = dbContext.Users.FirstOrDefault(u => u.Id == userId)?.Email ?? "Unknown",
+                UpdatedAt = DateTime.UtcNow
+            });
+
             dbContext.SaveChanges();
+            eventPublisher.PublishAsync(events);
 
             return Task.FromResult(new TaskServiceResponse(true));
         }
 
-        public Task<TaskServiceResponse> DeleteTaskAsync(Guid id)
+        public Task<TaskServiceResponse> DeleteTaskAsync(Guid userId, Guid id)
         {
             var existingTask = dbContext.Tasks.Find(id);
 
@@ -64,9 +79,11 @@ namespace TaskMangementApp.Services
             return Task.FromResult(new TaskServiceResponse(true, task));
         }
 
-        public Task<TaskServiceResponse> UpdateTaskAsync(Guid id, JsonElement taskJson)
+        public Task<TaskServiceResponse> UpdateTaskAsync(Guid userId, Guid id, JsonElement taskJson)
         {
             Models.Task? task = null;
+            List<ITaskEvent> events = new List<ITaskEvent>();
+
             try { task = JsonSerializer.Deserialize<Models.Task>(taskJson); } catch { }
 
             if (task is null)
@@ -83,9 +100,52 @@ namespace TaskMangementApp.Services
             if (existingTask is null)
                 return Task.FromResult(new TaskServiceResponse(false));
 
+            var userEmail = dbContext.Users.FirstOrDefault(u => u.Id == userId)?.Email ?? "Unknown";
+
+            if (existingTask.Status != task.Status)
+            {
+                events.Add(new TaskStatusChangedEvent
+                {
+                    TaskId = task.Id,
+                    UpdatedById = userId,
+                    UpdatedByEmail = userEmail,
+                    TaskState = task.Status,
+                    UpdatedAt = DateTime.UtcNow
+                });
+            }
+
+            if (existingTask.AssignedUser != task.AssignedUser)
+            {
+                events.Add(new TaskAssignedEvent
+                {
+                    TaskId = task.Id,
+                    UpdatedById = userId,
+                    UpdatedByEmail = userEmail,
+                    AssignedUser = task.AssignedUser,
+                    AssignedUserEmail = userEmail,
+                    UpdatedAt = DateTime.UtcNow
+                });
+            }
+
+            if (existingTask.Title != task.Title || existingTask.Description != task.Description)
+            {
+                events.Add(new TaskUpdatedEvent
+                {
+                    TaskId = task.Id,
+                    UpdatedById = userId,
+                    UpdatedByEmail = userEmail,
+                    Title = task.Title,
+                    Description = task.Description,
+                    UpdatedAt = DateTime.UtcNow
+                });
+            }
+
+
             task.Id = id;
             dbContext.Entry(existingTask).CurrentValues.SetValues(task);
+
             dbContext.SaveChanges();
+            eventPublisher.PublishAsync(events);
 
             return Task.FromResult(new TaskServiceResponse(true));
         }

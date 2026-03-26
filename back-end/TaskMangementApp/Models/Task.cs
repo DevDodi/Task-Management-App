@@ -7,7 +7,7 @@ namespace TaskMangementApp.Models
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public required string Title { get; set; }
-        public string? Description { get; set; }
+        public string Description { get; set; } = string.Empty;
         public TaskState Status { get; set; }
         public Guid AssignedUser { get; set; } = Guid.Empty;
         public Guid AssignedProject { get; set; } = Guid.Empty;
