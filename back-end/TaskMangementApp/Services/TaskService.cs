@@ -122,7 +122,7 @@ namespace TaskMangementApp.Services
                     UpdatedById = userId,
                     UpdatedByEmail = userEmail,
                     AssignedUser = task.AssignedUser,
-                    AssignedUserEmail = userEmail,
+                    AssignedUserEmail = userEmail, // TODO: This needs to be a passed in field from the request
                     UpdatedAt = DateTime.UtcNow
                 });
             }

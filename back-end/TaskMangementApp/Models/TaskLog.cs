@@ -10,8 +10,6 @@ namespace TaskMangementApp.Models
         public string Message { get; set; } = string.Empty;
         public Guid TaskId { get; set; }
         public Guid ChangedByUser { get; set; }
-
-        [JsonIgnore]
         public DateTime LastUpdatedUtc { get; set; }
     }
 
