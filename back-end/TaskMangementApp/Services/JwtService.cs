@@ -41,7 +41,7 @@ namespace TaskMangementApp.Services
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, matchingUser.Id.ToString()), // might not need this claim?
+                    new Claim(ClaimTypes.NameIdentifier, matchingUser.Id.ToString()),
                     new Claim(ClaimTypes.Email, matchingUser.Email),
                 }),
                 Expires = expiresIn,

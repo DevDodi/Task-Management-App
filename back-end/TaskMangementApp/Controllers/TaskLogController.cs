@@ -10,7 +10,7 @@ namespace TaskMangementApp.Controllers
     [ApiController]
     [Authorize]
     [Route("api/tasklogs")]
-    public class TaskLogController(ITaskLogService taskLogService)
+    public class TaskLogController(ITaskLogService taskLogService) : ControllerBase
     {
 
         [HttpGet("{taskId}")]

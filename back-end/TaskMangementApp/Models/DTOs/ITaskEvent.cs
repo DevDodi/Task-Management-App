@@ -4,7 +4,7 @@
     {
         Guid TaskId { get; set; }
         Guid UpdatedById { get; set; }
-        string UpdatedByName { get; set; }
+        string UpdatedByEmail { get; set; }
         DateTime UpdatedAt { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using TaskMangementApp.DB;
@@ -14,12 +15,14 @@ namespace TaskMangementApp.Controllers
     [ApiController]
     [Authorize]
     [Route("api/tasks")]
-    public class TaskController(ITaskService taskService)
+    public class TaskController(ITaskService taskService) : ControllerBase
     {
         [HttpPost]
         public async Task<IActionResult> CreateTask([FromBody] JsonElement taskJson)
         {
-            var result = await taskService.CreateTaskAsync(taskJson);
+            var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "");
+
+            var result = await taskService.CreateTaskAsync(userId, taskJson);
 
             if (!result.Success)
                 return new BadRequestObjectResult(result.Message);
@@ -50,8 +53,10 @@ namespace TaskMangementApp.Controllers
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTask(Guid id, [FromBody] JsonElement taskJson)
-        {            
-            var result = await taskService.UpdateTaskAsync(id, taskJson);
+        {
+            var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "");
+
+            var result = await taskService.UpdateTaskAsync(userId, id, taskJson);
 
             if (!result.Success)
                 return new BadRequestObjectResult(result.Message);
@@ -65,7 +70,9 @@ namespace TaskMangementApp.Controllers
             if (id == Guid.Empty)
                 return new BadRequestResult();
 
-            var result = await taskService.DeleteTaskAsync(id);
+            var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "");
+
+            var result = await taskService.DeleteTaskAsync(userId, id);
 
             if (!result.Success)
                 return new NotFoundObjectResult(result.Message);
