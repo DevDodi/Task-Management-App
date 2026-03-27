@@ -48,7 +48,7 @@ namespace TaskMangementApp.Events
             else if (taskEvent is TaskUpdatedEvent taskUpdatedEvent)
             {
                 taskLog.Action = Models.LogAction.Updated;
-                taskLog.Message = $"{taskEvent.UpdatedByEmail} has updated the task. Title - {taskUpdatedEvent.Title}, Description - {taskUpdatedEvent.Description}";
+                taskLog.Message = $"{taskEvent.UpdatedByEmail} has updated the task. Title - '{taskUpdatedEvent.Title}', Description - '{taskUpdatedEvent.Description}'";
                 
             }
             else if (taskEvent is TaskAssignedEvent taskAssignedEvent)

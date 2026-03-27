@@ -46,6 +46,11 @@ namespace TaskMangementApp.Services
 
             return System.Threading.Tasks.Task.FromResult(new UserServiceResponse(true));
         }
+        public Task<UserServiceResponseList> GetUsersAsync()
+        {
+            var users = dbContext.Users.ToList();
+            return System.Threading.Tasks.Task.FromResult(new UserServiceResponseList(true, users));
+        }
 
         public Task<UserServiceResponse> GetUserAsync(Guid id)
         {

@@ -11,4 +11,14 @@ namespace TaskMangementApp.Services.Responses
             User = user;
         }
     }
+
+    public class UserServiceResponseList : BaseServiceResponse
+    {
+        public List<User?> Users { get; set; }
+
+        public UserServiceResponseList(bool success, List<User?> users, string? message = null) : base(success, message)
+        {
+            Users = users;
+        }
+    }
 }

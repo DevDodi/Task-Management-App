@@ -26,6 +26,17 @@ namespace TaskMangementApp.Controllers
             return new OkResult();
         }
 
+        [HttpGet()]
+        public async Task<ActionResult<User>> GetUsers()
+        {
+            var result = await userService.GetUsersAsync();
+
+            if (!result.Success)
+                return new BadRequestObjectResult(new { result.Message });
+
+            return new OkObjectResult(new { result.Users });
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(Guid id)
         {
