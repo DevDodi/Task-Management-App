@@ -1,5 +1,9 @@
 import { apiClient } from './httpClient.js';
 
+export async function getUsers() {
+  return apiClient.get(`/users/`);
+}
+
 export async function getUser(id) {
   return apiClient.get(`/users/${id}`);
 }

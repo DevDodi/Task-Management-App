@@ -2,22 +2,26 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getProjectById } from "../api/projects.api.js";
 import { createTask, getProjectTasks, updateTask } from "../api/tasks.api.js";
-import { getUser } from "../api/users.api.js";
+import { getTaskLogs } from "../api/tasklogs.api.js";
+import { getUser, getUsers } from "../api/users.api.js";
 import Modal from "../components/Modal";
 import TaskRow from "../components/TaskRow";
 import {getStatusLabel} from "../components/TaskRow";
 import {TaskStatus} from "../api/types/models.js";
+import { formatDateTime } from "../utils/dateTimeUtil.js";
 import "./css/ProjectDetails.css";
 
 
 export default function ProjectDetails() {
 
     const {id} = useParams();
+    const [users, setUsers] = useState([]);
     const [selectedProject, setSelectedProject] = useState(null);
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");    
     const [auditLogs, setAuditLogs] = useState([]);
+    const [totalLogCount, setTotalLogCount] = useState(0);
     const [selectedTask, setSelectedTask] = useState(null);
     const [showCreateModal, setShowCreateModal] = useState(null);
     const [showEditModal, setShowEditModal] = useState(null);
@@ -25,6 +29,7 @@ export default function ProjectDetails() {
     const [description, setDescription] = useState("");
     const [assignee, setAssignee] = useState('00000000-0000-0000-0000-000000000000');
     const [status, setStatus] = useState(0);
+    
 
     const fetchTasks = async () => {
         const response = await getProjectTasks(id);
@@ -55,6 +60,9 @@ export default function ProjectDetails() {
 
                 const tasksWithExtras = await fetchTasks();
                 setTasks(tasksWithExtras);
+
+                const users = await getUsers();
+                setUsers(users.users);
             } catch (err) {
                 setError("Error fetching project and tasks");
             } finally {
@@ -64,17 +72,38 @@ export default function ProjectDetails() {
         fetchProjectAndTasks();
     }, [id]);
 
+
+    const handleSelectTask = async (task) => {
+        try {
+            const response = await getTaskLogs(task.id);
+            const logs = response.taskLogs ?? [];
+            
+            // Store total count of task logs and limit to first 10
+            setTotalLogCount(logs.length);
+            const limitedLogs = logs.slice(0, 10);
+            setAuditLogs(limitedLogs);
+
+        } catch (err) {
+            setSelectedTask(null);
+        }
+        setSelectedTask(task);
+    }
+
     const handleCreate = async () => {
         const taskId = crypto.randomUUID();
         await createTask({
             Id: taskId,
             Title: title,
             Description: description,
-            AssignedUser: assignee,
+            AssignedUser: assignee === "" ? "00000000-0000-0000-0000-000000000000" : assignee,
             Status: status,
             AssignedProject: id, // TODO: add choice of changing task to different project
         });
         setShowCreateModal(false);
+        setTitle("");
+        setDescription("");
+        setAssignee('00000000-0000-0000-0000-000000000000');
+        setStatus(0);
         fetchTasks().then(setTasks);
     }
 
@@ -83,11 +112,15 @@ export default function ProjectDetails() {
             Id: selectedTask.id,
             Title: title,
             Description: description,
-            AssignedUser: assignee,
+            AssignedUser: assignee === "" ? "00000000-0000-0000-0000-000000000000" : assignee,
             Status: status,
             AssignedProject: id, // TODO: add choice of changing task to different project
         });
         setShowEditModal(false);
+        setTitle("");
+        setDescription("");
+        setAssignee('00000000-0000-0000-0000-000000000000');
+        setStatus(0);
         fetchTasks().then(setTasks);
     }
 
@@ -124,8 +157,15 @@ export default function ProjectDetails() {
                             description={task.description ?? ""}
                             assignee={task.assigneeEmail}
                             status={task.status}
-                            onClick={() => setSelectedTask(task)}
-                            onEdit={() => setShowEditModal(true)}
+                            onClick={() => handleSelectTask(task)}
+                            onEdit={() => {
+                                handleSelectTask(task);
+                                setTitle(task.title);
+                                setDescription(task.description || "");
+                                setAssignee(task.assigneeEmail === "Unassigned" ? "" : task.assigneeEmail);
+                                setStatus(task.status);
+                                setShowEditModal(true);
+                            }}
                         />
                     ))}
                 </div>
@@ -137,12 +177,15 @@ export default function ProjectDetails() {
                             <p className="auditHeader-title">{selectedTask.title}</p>
                         </div>
                         <div className="auditLogs">
-                            <p className="auditLogs-label">Audit Log</p>
+                            <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                                <p className="auditLogs-label">Audit Log</p>
+                                {totalLogCount > 10 && <span style={{fontSize: "12px", color: "#666"}}>Showing {auditLogs.length} of {totalLogCount}</span>}
+                            </div>
                             <div className="auditLogs-items">
                                 {auditLogs.map((log, index) => (
                                     <div key={index} className="auditLogs-item">
-                                        <span className="auditLogs-item-time">time</span>
-                                        <p className="auditLogs-item-text">descrip</p>
+                                        <span className="auditLogs-item-time">{formatDateTime(log.lastUpdatedUtc)}</span>
+                                        <p className="auditLogs-item-text">{log.message}</p>
                                     </div>
                                 ))}
                             </div>
@@ -151,24 +194,28 @@ export default function ProjectDetails() {
                 )}
             </div>
             {showCreateModal && (
-                <Modal title="New Task" onClickOutside={() => setShowCreateModal(false)} onClickAction={handleCreate}>
+                <Modal title="New Task" onClickOutside={() => { setShowCreateModal(false); setTitle(""); setDescription(""); setAssignee('00000000-0000-0000-0000-000000000000'); setStatus(0); }} onClickAction={handleCreate}>
+                    <label className="modalLabel">Task Name</label>
                     <input 
                         className="modalInput"
                         type="text" 
                         placeholder="Enter task name"
                         onChange={(e) => setTitle(e.target.value)}
                     />
+                    <label className="modalLabel">Task Description</label>
                     <textarea 
                         className="modalDescription"
                         placeholder="Enter task description (optional)"
                         onChange={(e) => setDescription(e.target.value)}
                     />
+                    <label className="modalLabel">Assignee's Email</label>
                     <input 
                         className="modalAssignee"
                         type="text" 
                         placeholder="Enter assignee's email"
                         onChange={(e) => setAssignee(e.target.value)}
                     />
+                    <label className="modalLabel">Status</label>
                     <select className="modalStatus" onChange={(e) => setStatus(parseInt(e.target.value))}>
                         {Object.values(TaskStatus).map((v) => (
                             <option key={v} value={v}>
@@ -180,28 +227,32 @@ export default function ProjectDetails() {
             )}
 
             {showEditModal && (
-                <Modal title="Edit Task" onClickOutside={() => setShowEditModal(false)} onClickAction={handleUpdate}>
+                <Modal title="Edit Task" onClickOutside={() => { setShowEditModal(false); setTitle(""); setDescription(""); setAssignee('00000000-0000-0000-0000-000000000000'); setStatus(0); }} onClickAction={handleUpdate}>
+                    <label className="modalLabel">Task Name</label>
                     <input 
                         className="modalInput"
                         type="text" 
                         placeholder="Enter task name"
-                        defaultValue={selectedTask.title}
+                        value={title}
                         onChange={(e) => setTitle(e.target.value)}
                     />
+                    <label className="modalLabel">Task Description</label>
                     <textarea 
                         className="modalDescription"
                         placeholder="Enter task description (optional)"
-                        defaultValue={selectedTask.description}
+                        value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     />
+                    <label className="modalLabel">Assignee's Email</label>
                     <input 
                         className="modalAssignee"
                         type="text" 
                         placeholder="Enter assignee's email"
-                        defaultValue={selectedTask.assigneeEmail == "Unassigned" ? "" : selectedTask.assigneeEmail}
+                        value={assignee}
                         onChange={(e) => setAssignee(e.target.value)}
                     />
-                    <select className="modalStatus" onChange={(e) => setStatus(parseInt(e.target.value))} defaultValue={selectedTask.status}>
+                    <label className="modalLabel">Status</label>
+                    <select className="modalStatus" value={status} onChange={(e) => setStatus(parseInt(e.target.value))}>
                         {Object.values(TaskStatus).map((v) => (
                             <option key={v} value={v}>
                                 {getStatusLabel(v)}

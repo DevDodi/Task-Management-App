@@ -45,7 +45,7 @@
     grid-template-columns: 2fr 1fr 1fr 36px;
     justify-content: space-between;
     padding: 10px 20px;
-    background: #f5f5f5;
+    background: #0F3221;
     border-bottom: 1px solid #e5e5e5;
     font-size: 9px;
     font-weight: 600; 
@@ -61,14 +61,17 @@
     border-radius: 7px;
     overflow: hidden;
     text-align: center;
+    background-color: white;
 }
 
 .auditHeader {
     display: flex;
     flex-direction: column;
-    background: #f5f5f5;
+    background: #0F3221;
     border-bottom: 1px solid #e5e5e5;
     color: #999;
+    padding: 5px 10px;
+
 }
 
 .auditHeader-label {
@@ -89,10 +92,17 @@
 
 .auditLogs {
     border-top: 1px solid #e5e5e5;
-    padding-top: 12px;
     display: flex;
     flex-direction: column;
+    text-align: left;
+    padding: 5px 10px;
     gap: 8px;
+}
+
+.auditLogs-label{
+    color: #999;
+    font-size: 15px;
+    font-weight: 600;
 }
 
 .auditLogs-items{
@@ -127,4 +137,10 @@
     outline: none;
     box-sizing: border-box;
     transition: border-color 0.2s ease;
+}
+
+.modalLabel {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
 }
