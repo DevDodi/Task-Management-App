@@ -27,16 +27,16 @@
   margin: 0 0 4px 0;
 }
 
-.rowContainerDate {
-  font-size: 12px;
-  white-space: nowrap;
-  margin-left: 24px;
-}
-
 .rowContainerDescription {
   font-size: 13px;
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.rowContainerOwner {
+  font-size: 12px;
+  white-space: nowrap;
+  text-align: right;
 }

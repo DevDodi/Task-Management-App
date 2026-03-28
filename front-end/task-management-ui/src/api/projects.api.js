@@ -21,7 +21,7 @@ export async function createProject(project) {
 }
 
 export async function updateProject(id, project){
-  return apiClient.post(`/projects/${id}`, project)
+  return apiClient.patch(`/projects/${id}`, project)
 }
 
 export async function deleteProject(id){

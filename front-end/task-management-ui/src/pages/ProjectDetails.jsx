@@ -61,8 +61,8 @@ export default function ProjectDetails() {
                 const tasksWithExtras = await fetchTasks();
                 setTasks(tasksWithExtras);
 
-                const users = await getUsers();
-                setUsers(users.users);
+                const userResponses = await getUsers();
+                setUsers(userResponses.users);
             } catch (err) {
                 setError("Error fetching project and tasks");
             } finally {
@@ -209,12 +209,16 @@ export default function ProjectDetails() {
                         onChange={(e) => setDescription(e.target.value)}
                     />
                     <label className="modalLabel">Assignee's Email</label>
-                    <input 
-                        className="modalAssignee"
-                        type="text" 
-                        placeholder="Enter assignee's email"
-                        onChange={(e) => setAssignee(e.target.value)}
-                    />
+                    <select className="modalAssignee" onChange={(e) => setAssignee((e.target.value))}>
+                        {users.map((u) => (
+                            <option key={u.id} value={u.id}>
+                                {u.email}
+                            </option>
+                        ))}
+                        <option key={'00000000-0000-0000-0000-000000000000'} value={'00000000-0000-0000-0000-000000000000'}>
+                            Unassigned
+                        </option>
+                    </select>
                     <label className="modalLabel">Status</label>
                     <select className="modalStatus" onChange={(e) => setStatus(parseInt(e.target.value))}>
                         {Object.values(TaskStatus).map((v) => (
@@ -244,13 +248,16 @@ export default function ProjectDetails() {
                         onChange={(e) => setDescription(e.target.value)}
                     />
                     <label className="modalLabel">Assignee's Email</label>
-                    <input 
-                        className="modalAssignee"
-                        type="text" 
-                        placeholder="Enter assignee's email"
-                        value={assignee}
-                        onChange={(e) => setAssignee(e.target.value)}
-                    />
+                    <select className="modalAssignee" onChange={(e) => setAssignee((e.target.value))}>
+                        {users.map((u) => (
+                            <option key={u.id} value={u.id}>
+                                {u.email}
+                            </option>
+                        ))}
+                        <option key={'00000000-0000-0000-0000-000000000000'} value={'00000000-0000-0000-0000-000000000000'}>
+                            Unassigned
+                        </option>
+                    </select>
                     <label className="modalLabel">Status</label>
                     <select className="modalStatus" value={status} onChange={(e) => setStatus(parseInt(e.target.value))}>
                         {Object.values(TaskStatus).map((v) => (
