@@ -38,11 +38,32 @@
 .modalClose:hover {
   color: darkred;
 }
-.modalActionButton {
+
+.modalActionRow{
   display: flex;
-  justify-content: flex-end;
   gap: 10px;
   margin-top: 4px;
+}
+
+.modalDeleteButton{
+  background: none;
+  font-size: 14px;
+  border: 1px solid #fca5a5;
+  color: #b91c1c;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: color 0.15s ease, background 0.15s ease;  
+}
+
+.modalDeleteButton:hover {
+  background: #fef2f2;
+}
+  
+.modalActionButton {
+    display: flex;
+    justify-content: flex-end;
+    flex: 1;
 }
 
 .modalConfirmButton {

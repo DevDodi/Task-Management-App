@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getProjectById } from "../api/projects.api.js";
-import { createTask, getProjectTasks, updateTask } from "../api/tasks.api.js";
+import { createTask, getProjectTasks, updateTask, deleteTask } from "../api/tasks.api.js";
 import { getTaskLogs } from "../api/tasklogs.api.js";
 import { getUser, getUsers } from "../api/users.api.js";
 import Modal from "../components/Modal";
@@ -124,6 +124,17 @@ export default function ProjectDetails() {
         fetchTasks().then(setTasks);
     }
 
+    const handleDelete = async () => {
+        await deleteTask(selectedTask.id);
+        setShowEditModal(false);
+        setTitle("");
+        setDescription("");
+        setAssignee('00000000-0000-0000-0000-000000000000');
+        setStatus(0);
+        setSelectedTask(null);
+        fetchTasks().then(setTasks);
+    }
+
     if (loading) return <div className="detailsContainer">Loading...</div>;
     if (error) return <div className="detailsContainer">{error}</div>;
 
@@ -231,7 +242,7 @@ export default function ProjectDetails() {
             )}
 
             {showEditModal && (
-                <Modal title="Edit Task" onClickOutside={() => { setShowEditModal(false); setTitle(""); setDescription(""); setAssignee('00000000-0000-0000-0000-000000000000'); setStatus(0); }} onClickAction={handleUpdate}>
+                <Modal title="Edit Task" onClickOutside={() => { setShowEditModal(false); setTitle(""); setDescription(""); setAssignee('00000000-0000-0000-0000-000000000000'); setStatus(0); }} onClickDelete = {handleDelete} onClickAction={handleUpdate}>
                     <label className="modalLabel">Task Name</label>
                     <input 
                         className="modalInput"

@@ -1,6 +1,6 @@
 import "./css/Modal.css";
 
-export default function Modal({title, children, onClickOutside, onClickAction}) {
+export default function Modal({title, children, onClickOutside, onClickDelete, onClickAction}) {
 
     return(
         <div className="modalContainer" onClick={onClickOutside}>
@@ -12,10 +12,17 @@ export default function Modal({title, children, onClickOutside, onClickAction}) 
                     </button>              
                 </div>  
                 {children}
-                <div className="modalActionButton">
-                    <button className="modalConfirmButton" onClick={onClickAction}>
-                        Confirm
-                    </button>
+                <div className="modalActionRow">
+                    {onClickDelete && (
+                        <button className="modalDeleteButton" onClick={onClickDelete}>
+                            Delete
+                        </button>
+                    )}
+                    <div className="modalActionButton">
+                        <button className="modalConfirmButton" onClick={onClickAction}>
+                            Confirm
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

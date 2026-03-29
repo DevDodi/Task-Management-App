@@ -50,6 +50,10 @@
   letter-spacing: 0.05em;
 }
 
+.projectsListHeaderEndCell{
+  padding-right: 40px;
+}
+
 .modalTitle {
     font-size: 18px;
     font-weight: 600;
