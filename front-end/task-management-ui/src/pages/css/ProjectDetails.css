@@ -1,0 +1,165 @@
+.detailsContainer{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px;
+}
+
+.detailsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.detailsTitle {
+    display: flex;
+    margin: 0;
+    color: #555;
+}
+
+.projectsBreadcrumb {
+    color: silver;
+    cursor: pointer;
+}
+
+.titleSeperator {
+    margin: 0 8px;
+    color: #999;
+}
+
+.projectName {
+    color: #0F3221;
+    font-size: 24px;
+}
+
+.createTaskButton {
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.createTaskButton:hover {
+    background-color: darkgreen;
+}
+
+.detailsBody {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 12px;
+    align-items: start;
+}
+
+.tasksList{
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.tasksListHeader {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 36px;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background: #0F3221;
+    border-bottom: 1px solid #e5e5e5;
+    font-size: 9px;
+    font-weight: 600; 
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.auditContainer{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e5e5e5;
+    border-radius: 7px;
+    overflow: hidden;
+    text-align: center;
+    background-color: white;
+}
+
+.auditHeader {
+    display: flex;
+    flex-direction: column;
+    background: #0F3221;
+    border-bottom: 1px solid #e5e5e5;
+    color: #999;
+    padding: 5px 10px;
+
+}
+
+.auditHeader-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0;
+}
+
+.auditHeader-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    margin: 0;
+}
+
+.auditLogs {
+    border-top: 1px solid #e5e5e5;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding: 5px 10px;
+    gap: 8px;
+}
+
+.auditLogs-label{
+    color: #999;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.auditLogs-items{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+
+.auditLogs-item-time {
+    color: #999;
+    font-size: 12px;
+}
+
+.auditLogs-item-text {
+    font-size: 13px;
+    color: #333;
+    margin: 2px 0 0;
+}
+
+.modalInput,
+.modalDescription,
+.modalAssignee,
+.modalStatus{
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #111;
+    background-color: #FFF4E2;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+}
+
+.modalLabel {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+}

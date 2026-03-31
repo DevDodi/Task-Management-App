@@ -16,8 +16,8 @@ namespace TaskMangementApp.Services
     {
         public Task<JwtServiceResponse> Authenticate(JsonElement userJson)
         {
-            UserDTO? userDTO = null;
-            try { userDTO = JsonSerializer.Deserialize<UserDTO>(userJson); } catch { }
+            AuthUserDTO? userDTO = null;
+            try { userDTO = JsonSerializer.Deserialize<AuthUserDTO>(userJson); } catch { }
 
             if (userDTO is null)
                 return System.Threading.Tasks.Task.FromResult(new JwtServiceResponse(false));
@@ -55,7 +55,7 @@ namespace TaskMangementApp.Services
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
             var accessToken = tokenHandler.WriteToken(securityToken);
 
-            return System.Threading.Tasks.Task.FromResult(new JwtServiceResponse(true, matchingUser, accessToken, expiresIn));
+            return System.Threading.Tasks.Task.FromResult(new JwtServiceResponse(true, matchingUser.Id, accessToken, expiresIn));
         }
     }
 }

@@ -1,34 +1,46 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import Login from "./pages/Login";
+import Projects from "./pages/Projects";
+import Register from "./pages/Register";
+import ProjectDetails from "./pages/ProjectDetails";
+import Banner from "./components/Banner";
+import RequireAuth from "./components/RequireAuth";
 import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [token, setToken] = useState(() => {
+    const token = localStorage.getItem("token");
+    return token;
+  });
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    setToken(null);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <BrowserRouter> 
+      <Banner header="Task Management App" name="Task Management App" loggedIn={!!token} onSignOut={handleSignOut} />
+      <Toaster position="top-center" />
+      <Routes>
+        <Route path="/login" element={<Login onLogin={setToken} /> } />
+        <Route path="/register" element={<Register />} />
+        <Route path="/projects" element={
+          <RequireAuth>
+            <Projects />
+          </RequireAuth> } 
+        />
+        <Route path="/projects/:id" element={
+          <RequireAuth>
+            <ProjectDetails />
+          </RequireAuth> } 
+        />
+        <Route path="*" element={<Login />} />
+      </Routes>
+    </BrowserRouter>    
   )
 }
 

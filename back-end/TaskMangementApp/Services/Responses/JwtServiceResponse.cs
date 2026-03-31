@@ -4,7 +4,7 @@ namespace TaskMangementApp.Services.Responses
 {
     public class JwtServiceResponse : BaseServiceResponse
     {
-        public User? User { get; set; }
+        public Guid UserId { get; set; }
         public string? AccessToken { get; set; }
         public DateTime ExpiresIn { get; set; }
 
@@ -13,9 +13,9 @@ namespace TaskMangementApp.Services.Responses
 
         }
 
-        public JwtServiceResponse(bool success, User user, string accessToken, DateTime expiresIn) : base(success)
+        public JwtServiceResponse(bool success, Guid userId, string accessToken, DateTime expiresIn) : base(success)
         {
-            User = user;
+            UserId = userId;
             AccessToken = accessToken;
             ExpiresIn = expiresIn;
         }

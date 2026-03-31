@@ -21,9 +21,20 @@ namespace TaskMangementApp.Controllers
             var result = await userService.CreateUserAsync(userJson);
 
             if (!result.Success)
-                return new BadRequestObjectResult(result.Message);
+                return new BadRequestObjectResult(new { result.Message });
 
             return new OkResult();
+        }
+
+        [HttpGet()]
+        public async Task<ActionResult<User>> GetUsers()
+        {
+            var result = await userService.GetUsersAsync();
+
+            if (!result.Success)
+                return new BadRequestObjectResult(new { result.Message });
+
+            return new OkObjectResult(new { result.Users });
         }
 
         [HttpGet("{id}")]
@@ -35,9 +46,9 @@ namespace TaskMangementApp.Controllers
             var result = await userService.GetUserAsync(id);
 
             if (!result.Success)
-                return new BadRequestObjectResult(result.Message);
+                return new BadRequestObjectResult(new { result.Message });
 
-            return new OkObjectResult(result.User);
+            return new OkObjectResult(new { result.User });
         }
 
         [HttpPatch("{id}")]
@@ -46,7 +57,7 @@ namespace TaskMangementApp.Controllers
             var result = await userService.UpdateUserAsync(id, userJson);
 
             if (!result.Success)
-                return new BadRequestObjectResult(result.Message);
+                return new BadRequestObjectResult(new { result.Message });
 
             return new OkResult();
         }
@@ -60,7 +71,7 @@ namespace TaskMangementApp.Controllers
             var result = await userService.DeleteUserAsync(id);
 
             if (!result.Success)
-                return new NotFoundObjectResult(result.Message);
+                return new NotFoundObjectResult(new { result.Message });
 
             return new OkResult();
         }

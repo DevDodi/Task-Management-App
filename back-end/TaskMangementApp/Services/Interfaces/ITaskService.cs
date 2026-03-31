@@ -7,8 +7,8 @@ namespace TaskMangementApp.Services.Interfaces
     {
         Task<TaskServiceResponse> CreateTaskAsync(Guid userId, JsonElement taskJson);
         Task<TaskServiceResponse> GetTaskAsync(Guid id);
-        Task<TaskServiceResponseList> GetAllTasksAsync();
+        Task<TaskServiceResponseList> GetTasksAsync(Guid? projectId);
         Task<TaskServiceResponse> UpdateTaskAsync(Guid userId, Guid id, JsonElement taskJson);
-        Task<TaskServiceResponse> DeleteTaskAsync(Guid userId,Guid id);     
+        Task<TaskServiceResponse> DeleteTaskAsync(Guid userId, Guid id);    
     }
 }

@@ -25,7 +25,7 @@ namespace TaskMangementApp.Controllers
             var result = await taskService.CreateTaskAsync(userId, taskJson);
 
             if (!result.Success)
-                return new BadRequestObjectResult(result.Message);
+                return new BadRequestObjectResult(new { result.Message });
 
             return new OkResult();
         }
@@ -39,16 +39,16 @@ namespace TaskMangementApp.Controllers
             var result = await taskService.GetTaskAsync(id);
 
             if (!result.Success)
-                return new BadRequestObjectResult(result.Message);
+                return new BadRequestObjectResult(new { result.Message });
 
-            return new OkObjectResult(result.Task);           
+            return new OkObjectResult(new { result.Task });           
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<Models.Task>>> GetAllTasks()
+        [HttpGet()]
+        public async Task<ActionResult<List<Models.Task>>> GetTasks([FromQuery] Guid? projectId = null)
         {
-            var result = await taskService.GetAllTasksAsync();
-            return new OkObjectResult(result.Tasks);
+            var result = await taskService.GetTasksAsync(projectId);
+            return new OkObjectResult(new { result.Tasks });
         }
 
         [HttpPut("{id}")]
@@ -59,7 +59,7 @@ namespace TaskMangementApp.Controllers
             var result = await taskService.UpdateTaskAsync(userId, id, taskJson);
 
             if (!result.Success)
-                return new BadRequestObjectResult(result.Message);
+                return new BadRequestObjectResult(new { result.Message });
 
             return new OkResult();
         }
@@ -75,7 +75,7 @@ namespace TaskMangementApp.Controllers
             var result = await taskService.DeleteTaskAsync(userId, id);
 
             if (!result.Success)
-                return new NotFoundObjectResult(result.Message);
+                return new NotFoundObjectResult(new { result.Message });
 
             return new OkResult();
         }

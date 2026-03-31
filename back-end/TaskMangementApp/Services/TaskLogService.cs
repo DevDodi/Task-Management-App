@@ -27,7 +27,7 @@ namespace TaskMangementApp.Services
             var taskLogsQuery = dbContext.TaskLogs.Where(tl => tl.TaskId == taskId && 
             tl.LastUpdatedUtc >= startDTO && tl.LastUpdatedUtc <= endDTO);
 
-            var taskLogs = taskLogsQuery.ToList();
+            var taskLogs = taskLogsQuery.OrderByDescending(tl => tl.LastUpdatedUtc).ToList();
 
             return Task.FromResult(new TaskLogServiceResponseList(true, taskLogs));
         }

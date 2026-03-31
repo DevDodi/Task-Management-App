@@ -1,4 +1,5 @@
 ﻿using TaskMangementApp.Events.Interfaces;
+using TaskMangementApp.Extensions;
 using TaskMangementApp.Models.DTOs;
 using TaskMangementApp.Models.Events;
 using TaskMangementApp.Services.Interfaces;
@@ -47,7 +48,7 @@ namespace TaskMangementApp.Events
             else if (taskEvent is TaskUpdatedEvent taskUpdatedEvent)
             {
                 taskLog.Action = Models.LogAction.Updated;
-                taskLog.Message = $"{taskEvent.UpdatedByEmail} has updated the task. Title - {taskUpdatedEvent.Title}, Description - {taskUpdatedEvent.Description}";
+                taskLog.Message = $"{taskEvent.UpdatedByEmail} has updated the task. Title - '{taskUpdatedEvent.Title}', Description - '{taskUpdatedEvent.Description}'";
                 
             }
             else if (taskEvent is TaskAssignedEvent taskAssignedEvent)
@@ -60,7 +61,7 @@ namespace TaskMangementApp.Events
             else if (taskEvent is TaskStatusChangedEvent taskStatusEvent)
             {
                 taskLog.Action = Models.LogAction.StatusChange;
-                taskLog.Message = $"{taskEvent.UpdatedByEmail} changed status to {taskStatusEvent.TaskState.ToString()}.";
+                taskLog.Message = $"{taskEvent.UpdatedByEmail} changed status to {taskStatusEvent.TaskState.GetDescription()}.";
             }
 
             await taskLogService.CreateTaskLogAsync(taskLog);

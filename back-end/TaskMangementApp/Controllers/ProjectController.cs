@@ -7,6 +7,7 @@ using TaskMangementApp.DB;
 using TaskMangementApp.Models;
 using TaskMangementApp.Services;
 using TaskMangementApp.Services.Interfaces;
+using static TaskMangementApp.Models.Project;
 
 namespace TaskMangementApp.Controllers
 {
@@ -21,7 +22,7 @@ namespace TaskMangementApp.Controllers
             var result = await projectService.CreateProjectAsync(projectJson);
 
             if (!result.Success)
-                return new BadRequestObjectResult(result.Message);
+                return new BadRequestObjectResult(new { result.Message });
             
             return new OkResult();
         }
@@ -36,9 +37,20 @@ namespace TaskMangementApp.Controllers
             var result = await projectService.GetProjectAsync(id);
 
             if (!result.Success)
-                return new BadRequestObjectResult(result.Message);
+                return new BadRequestObjectResult(new { result.Message });
 
-            return new OkObjectResult(result.Project);   
+            return new OkObjectResult(new { result.Project });   
+        }
+
+        [HttpGet()]
+        public async Task<ActionResult<Project>> GetProjectsAsync([FromQuery] bool unassigned = false, [FromQuery] Guid? ownerId = null)
+        {
+            var result = await projectService.GetProjectsAsync(unassigned, ownerId);
+
+            if (!result.Success)
+                return new BadRequestObjectResult(new { result.Message });
+
+            return new OkObjectResult(new { result.Projects });
         }
 
         [HttpPatch("{id}")]
@@ -47,7 +59,7 @@ namespace TaskMangementApp.Controllers
             var result = await projectService.UpdateProjectAsync(id, projectJson);
 
             if (!result.Success)
-                return new BadRequestObjectResult(result.Message);
+                return new BadRequestObjectResult(new { result.Message });
 
             return new OkResult();            
         }
@@ -61,7 +73,7 @@ namespace TaskMangementApp.Controllers
             var result = await projectService.DeleteProjectAsync(id);
 
             if (!result.Success)
-                return new NotFoundObjectResult(result.Message);
+                return new NotFoundObjectResult(new { result.Message });
 
             return new OkResult();       
         }

@@ -51,6 +51,7 @@ namespace TaskMangementApp.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("LastUpdatedUtc")
@@ -81,6 +82,10 @@ namespace TaskMangementApp.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("TaskId")

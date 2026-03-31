@@ -1,0 +1,76 @@
+.projectsContainer{
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.projectsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.projectsTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #0F3221;
+}
+
+.createProjectButton {
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.createProjectButton:hover {
+    background-color: darkgreen;
+}
+
+.projectsList {
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.projectsListHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: #0F3221;
+  border-bottom: 1px solid #e5e5e5;
+  font-size: 11px;
+  font-weight: 600; 
+  color: #FFF4E2;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.projectsListHeaderEndCell{
+  padding-right: 40px;
+}
+
+.modalTitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: #FFF4E2;
+    margin: 0;
+}
+
+.modalInput,
+.modalDescription {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #111;
+    background-color: #FFF4E2;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+}
+
