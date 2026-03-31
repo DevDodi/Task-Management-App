@@ -12,8 +12,8 @@ namespace TaskMangementApp.Services
     {
         public Task<UserServiceResponse> CreateUserAsync(JsonElement userJson)
         {
-            UserDTO? userDTO = null;
-            try { userDTO = JsonSerializer.Deserialize<UserDTO>(userJson); } catch { }
+            AuthUserDTO? userDTO = null;
+            try { userDTO = JsonSerializer.Deserialize<AuthUserDTO>(userJson); } catch { }
 
             if (userDTO is null)
                 return System.Threading.Tasks.Task.FromResult(new UserServiceResponse(false));
@@ -48,7 +48,7 @@ namespace TaskMangementApp.Services
         }
         public Task<UserServiceResponseList> GetUsersAsync()
         {
-            var users = dbContext.Users.ToList();
+            var users = dbContext.Users.Select(u => new UserDTO { Id = u.Id, Email = u.Email }).ToList();
             return System.Threading.Tasks.Task.FromResult(new UserServiceResponseList(true, users));
         }
 
@@ -59,13 +59,15 @@ namespace TaskMangementApp.Services
             if (user is null)
                 return System.Threading.Tasks.Task.FromResult(new UserServiceResponse(false));
 
-            return System.Threading.Tasks.Task.FromResult(new UserServiceResponse(true, user));
+            var userDTO = new UserDTO { Id = user.Id, Email = user.Email };
+
+            return System.Threading.Tasks.Task.FromResult(new UserServiceResponse(true, userDTO));
         }
 
         public Task<UserServiceResponse> UpdateUserAsync(Guid id, JsonElement userJson)
         {
-            UserDTO? userDTO = null;
-            try { userDTO = JsonSerializer.Deserialize<UserDTO>(userJson); } catch { }
+            AuthUserDTO? userDTO = null;
+            try { userDTO = JsonSerializer.Deserialize<AuthUserDTO>(userJson); } catch { }
 
             if (userDTO is null)
                 return System.Threading.Tasks.Task.FromResult(new UserServiceResponse(false));

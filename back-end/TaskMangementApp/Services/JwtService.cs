@@ -16,8 +16,8 @@ namespace TaskMangementApp.Services
     {
         public Task<JwtServiceResponse> Authenticate(JsonElement userJson)
         {
-            UserDTO? userDTO = null;
-            try { userDTO = JsonSerializer.Deserialize<UserDTO>(userJson); } catch { }
+            AuthUserDTO? userDTO = null;
+            try { userDTO = JsonSerializer.Deserialize<AuthUserDTO>(userJson); } catch { }
 
             if (userDTO is null)
                 return System.Threading.Tasks.Task.FromResult(new JwtServiceResponse(false));
