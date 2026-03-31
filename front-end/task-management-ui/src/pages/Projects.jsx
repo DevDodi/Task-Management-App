@@ -1,5 +1,6 @@
 import { useState, useEffect, use } from "react";
 import { useNavigate } from "react-router-dom";
+import { truncateText } from "../utils/Util.js";
 import "./css/Projects.css";
 import {createProject, getOwnedByProjects, getUnassignedProjects, updateProject, deleteProject} from "../api/projects.api.js"
 import { getUser, getUsers } from "../api/users.api.js";
@@ -88,7 +89,7 @@ export default function Projects() {
                 {projects.map((project) => (
                     <ProjectRow
                         key={project.id}
-                        name={project.name}
+                        name={truncateText(project.name, 50)}
                         description={project.description}
                         owner={users.find(u => u.id === project.ownerId)?.email ?? "Unassigned"}
                         onClick={() => onRowClick(project.id)}
@@ -119,14 +120,14 @@ export default function Projects() {
                     />
                     <label className="modalLabel">Owner's Email</label>
                     <select className="modalAssignee" onChange={(e) => setAssignee((e.target.value))}>
+                        <option key={'00000000-0000-0000-0000-000000000000'} value={'00000000-0000-0000-0000-000000000000'}>
+                            Unassigned
+                        </option>
                         {users.map((u) => (
                             <option key={u.id} value={u.id}>
                                 {u.email}
                             </option>
                         ))}
-                        <option key={'00000000-0000-0000-0000-000000000000'} value={'00000000-0000-0000-0000-000000000000'}>
-                            Unassigned
-                        </option>
                     </select>
                 </Modal>
             )}
@@ -149,15 +150,15 @@ export default function Projects() {
                         onChange={(e) => setDescription(e.target.value)}
                     />
                     <label className="modalLabel">Owner's Email</label>
-                    <select className="modalAssignee" onChange={(e) => setAssignee((e.target.value))}>
+                    <select className="modalAssignee" value={assignee} onChange={(e) => setAssignee((e.target.value))}>                      
+                        <option key={'00000000-0000-0000-0000-000000000000'} value={'00000000-0000-0000-0000-000000000000'}>
+                            Unassigned
+                        </option>
                         {users.map((u) => (
                             <option key={u.id} value={u.id}>
                                 {u.email}
                             </option>
                         ))}
-                        <option key={'00000000-0000-0000-0000-000000000000'} value={'00000000-0000-0000-0000-000000000000'}>
-                            Unassigned
-                        </option>
                     </select>
                 </Modal>
             )}

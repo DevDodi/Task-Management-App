@@ -9,7 +9,7 @@
 }
 
 .modal {
-  background: grey;
+  background: #0F3221;
   border-radius: 12px;
   padding: 32px;
   width: 100%;
@@ -48,8 +48,8 @@
 .modalDeleteButton{
   background: none;
   font-size: 14px;
-  border: 1px solid #fca5a5;
-  color: #b91c1c;
+  border: 1px solid #b91c1c;
+  color: red;
   cursor: pointer;
   padding: 4px 8px;
   border-radius: 4px;
@@ -68,8 +68,8 @@
 
 .modalConfirmButton {
     padding: 9px 16px;
-    background: #111;
-    color: white;
+    background: #FFF4E2;
+    color: #0F3221;
     border: none;
     border-radius: 6px;
     font-size: 14px;
@@ -78,5 +78,5 @@
 }
 
 .modalConfirmButton:hover {
-    background-color: #333;
+    background-color: gray;
 }

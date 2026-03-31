@@ -13,3 +13,8 @@ export function formatDateTime(utcString) {
   if (isYesterday) return `Yesterday ${time}`;
   return date.toLocaleDateString(undefined, { day: "numeric", month: "short" }) + ` ${time}`;
 }
+
+
+export function truncateText(text, limit) {
+    return text?.length > limit ? text.slice(0, limit) + "..." : text;
+}

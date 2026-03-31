@@ -8,7 +8,7 @@ import Modal from "../components/Modal";
 import TaskRow from "../components/TaskRow";
 import {getStatusLabel} from "../components/TaskRow";
 import {TaskStatus} from "../api/types/models.js";
-import { formatDateTime } from "../utils/dateTimeUtil.js";
+import { formatDateTime, truncateText } from "../utils/Util.js";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import "./css/ProjectDetails.css";
@@ -48,7 +48,7 @@ export default function ProjectDetails() {
 
                 return {
                     ...task,
-                    assigneeEmail,
+                    assigneeEmail
                 };
             })
         );
@@ -146,7 +146,7 @@ export default function ProjectDetails() {
                     </h1>
                     <h1 className="titleSeperator">/</h1>
                     <h1 className="projectName">
-                        {selectedProject === null ? id : selectedProject.name}
+                        {selectedProject === null ? id : truncateText(selectedProject.name, 50)}
                     </h1>
                 </div>
                 <button className="createTaskButton" onClick={() => setShowCreateModal(true)}>
@@ -163,8 +163,8 @@ export default function ProjectDetails() {
                     {tasks.map((task) => (
                         <TaskRow
                             key={task.id}
-                            name={task.title}
-                            description={task.description ?? ""}
+                            name={truncateText(task.title, 50)}
+                            description={truncateText(task.description ?? "", 47)}
                             assignee={task.assigneeEmail}
                             status={task.status}
                             onClick={() => handleSelectTask(task)}
@@ -172,7 +172,7 @@ export default function ProjectDetails() {
                                 handleSelectTask(task);
                                 setTitle(task.title);
                                 setDescription(task.description || "");
-                                setAssignee(task.assigneeEmail === "Unassigned" ? "" : task.assigneeEmail);
+                                setAssignee(task.assignedUser === '00000000-0000-0000-0000-000000000000' ? "" : task.assignedUser);
                                 setStatus(task.status);
                                 setShowEditModal(true);
                             }}
@@ -220,14 +220,14 @@ export default function ProjectDetails() {
                     />
                     <label className="modalLabel">Assignee's Email</label>
                     <select className="modalAssignee" onChange={(e) => setAssignee((e.target.value))}>
+                        <option key={'00000000-0000-0000-0000-000000000000'} value={'00000000-0000-0000-0000-000000000000'}>
+                            Unassigned
+                        </option>
                         {users.map((u) => (
                             <option key={u.id} value={u.id}>
                                 {u.email}
                             </option>
                         ))}
-                        <option key={'00000000-0000-0000-0000-000000000000'} value={'00000000-0000-0000-0000-000000000000'}>
-                            Unassigned
-                        </option>
                     </select>
                     <label className="modalLabel">Status</label>
                     <select className="modalStatus" onChange={(e) => setStatus(parseInt(e.target.value))}>
@@ -258,15 +258,15 @@ export default function ProjectDetails() {
                         onChange={(e) => setDescription(e.target.value)}
                     />
                     <label className="modalLabel">Assignee's Email</label>
-                    <select className="modalAssignee" onChange={(e) => setAssignee((e.target.value))}>
+                    <select className="modalAssignee" value={assignee} onChange={(e) => setAssignee((e.target.value))}>
+                        <option key={'00000000-0000-0000-0000-000000000000'} value={'00000000-0000-0000-0000-000000000000'}>
+                            Unassigned
+                        </option> 
                         {users.map((u) => (
                             <option key={u.id} value={u.id}>
                                 {u.email}
                             </option>
-                        ))}
-                        <option key={'00000000-0000-0000-0000-000000000000'} value={'00000000-0000-0000-0000-000000000000'}>
-                            Unassigned
-                        </option>
+                        ))}                                        
                     </select>
                     <label className="modalLabel">Status</label>
                     <select className="modalStatus" value={status} onChange={(e) => setStatus(parseInt(e.target.value))}>

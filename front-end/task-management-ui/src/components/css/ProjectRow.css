@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px 20px;
-  background: gray;
+  background: white;
   border-bottom: 1px solid #e5e5e5;
   cursor: pointer;
   transition: background 0.15s ease;
@@ -13,7 +13,7 @@
 }
 
 .rowContainer:hover {
-  background: dimgray;
+  background: silver;
 }
 
 .rowContainerInfo {
@@ -24,7 +24,7 @@
 .rowContainerName {
   font-size: 15px;
   font-weight: 600;
-  
+  color: #0F3221;
 }
 
 .rowContainerDescription {
@@ -36,6 +36,7 @@
 }
 
 .rowContainerOwner {
+  color: #0F3221;
   font-size: 12px;
   white-space: nowrap;
   text-align: right;

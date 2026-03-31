@@ -18,7 +18,7 @@
 }
 
 .projectsBreadcrumb {
-    color: #0F3221;
+    color: silver;
     cursor: pointer;
 }
 
@@ -28,8 +28,21 @@
 }
 
 .projectName {
-    color: white;
+    color: #0F3221;
     font-size: 24px;
+}
+
+.createTaskButton {
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.createTaskButton:hover {
+    background-color: darkgreen;
 }
 
 .detailsBody {
@@ -91,7 +104,7 @@
 .auditHeader-title {
     font-size: 15px;
     font-weight: 600;
-    color: #111;
+    color: white;
     margin: 0;
 }
 
@@ -139,6 +152,7 @@
     border-radius: 6px;
     font-size: 14px;
     color: #111;
+    background-color: #FFF4E2;
     outline: none;
     box-sizing: border-box;
     transition: border-color 0.2s ease;
