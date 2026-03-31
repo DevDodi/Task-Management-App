@@ -6,6 +6,7 @@ import padlockIcon from "../assets/padlock.png"
 import {createUser} from "../api/users.api.js"
 import AuthenticationForm from "../components/AuthentiationForm";
 import Input from "../components/Input";
+import toast from "react-hot-toast";
 
 
 export default function Register() {
@@ -26,6 +27,7 @@ export default function Register() {
 
     try {
       await createUser({ Email: email, Password: password });
+      toast.success("Account created! Please sign in.");
       navigate("/login");
     } catch (err) {
       setError(err.message);

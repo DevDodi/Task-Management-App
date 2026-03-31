@@ -5,6 +5,7 @@ import {createProject, getOwnedByProjects, getUnassignedProjects, updateProject,
 import { getUser, getUsers } from "../api/users.api.js";
 import ProjectRow from "../components/ProjectRow";
 import Modal from "../components/Modal";
+import toast from "react-hot-toast";
 
 export default function Projects() {
 
@@ -50,15 +51,16 @@ export default function Projects() {
     const handleUpdate = async () => {
         await updateProject(selectedProject.id, {Id: selectedProject.id, Name: name, Description: description, OwnerId: assignee});
         setShowEditModal(false);
-        setName("");
-        setDescription("");
-        setAssignee('00000000-0000-0000-0000-000000000000');
-        fetchAndSetProjects();
+        refreshPage();
     }
 
     const handleDelete = async () => {
         await deleteProject(selectedProject.id);
         setShowEditModal(false);
+        refreshPage();
+    }
+
+    const refreshPage = () => {
         setName("");
         setDescription("");
         setAssignee('00000000-0000-0000-0000-000000000000');

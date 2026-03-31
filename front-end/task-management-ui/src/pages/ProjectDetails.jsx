@@ -9,12 +9,15 @@ import TaskRow from "../components/TaskRow";
 import {getStatusLabel} from "../components/TaskRow";
 import {TaskStatus} from "../api/types/models.js";
 import { formatDateTime } from "../utils/dateTimeUtil.js";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import "./css/ProjectDetails.css";
 
 
 export default function ProjectDetails() {
 
     const {id} = useParams();
+    const navigate = useNavigate();
     const [users, setUsers] = useState([]);
     const [selectedProject, setSelectedProject] = useState(null);
     const [tasks, setTasks] = useState([]);
@@ -38,7 +41,7 @@ export default function ProjectDetails() {
                 let assigneeEmail = "Unassigned";
                 if (task.assignedUser) {
                     try {
-                        const userResponse = await getUser(task.assignedUser);
+                        const userResponse = task.assignedUser === '00000000-0000-0000-0000-000000000000' ? null : await getUser(task.assignedUser);
                         assigneeEmail = userResponse?.user.email ?? assigneeEmail;
                     } catch { /* eat exception and keep default*/}
                 }
@@ -100,11 +103,7 @@ export default function ProjectDetails() {
             AssignedProject: id, // TODO: add choice of changing task to different project
         });
         setShowCreateModal(false);
-        setTitle("");
-        setDescription("");
-        setAssignee('00000000-0000-0000-0000-000000000000');
-        setStatus(0);
-        fetchTasks().then(setTasks);
+        refreshPage();
     }
 
     const handleUpdate = async () => {
@@ -117,21 +116,21 @@ export default function ProjectDetails() {
             AssignedProject: id, // TODO: add choice of changing task to different project
         });
         setShowEditModal(false);
-        setTitle("");
-        setDescription("");
-        setAssignee('00000000-0000-0000-0000-000000000000');
-        setStatus(0);
-        fetchTasks().then(setTasks);
+        refreshPage();
     }
 
     const handleDelete = async () => {
         await deleteTask(selectedTask.id);
         setShowEditModal(false);
+        setSelectedTask(null);    
+        refreshPage();
+    }
+
+    const refreshPage = () => {
         setTitle("");
         setDescription("");
         setAssignee('00000000-0000-0000-0000-000000000000');
         setStatus(0);
-        setSelectedTask(null);
         fetchTasks().then(setTasks);
     }
 
@@ -142,7 +141,7 @@ export default function ProjectDetails() {
         <div className="detailsContainer">
             <div className="detailsHeader">
                 <div className="detailsTitle">
-                    <h1 style={{fontSize: "24px"}}>
+                    <h1 className="projectsBreadcrumb" onClick={() => navigate("/projects")} style={{fontSize: "24px"}}>
                         My Projects
                     </h1>
                     <h1 className="titleSeperator">/</h1>

@@ -17,6 +17,11 @@
     color: #555;
 }
 
+.projectsBreadcrumb {
+    color: #0F3221;
+    cursor: pointer;
+}
+
 .titleSeperator {
     margin: 0 8px;
     color: #999;

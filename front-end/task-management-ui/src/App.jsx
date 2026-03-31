@@ -7,6 +7,7 @@ import Banner from "./components/Banner";
 import RequireAuth from "./components/RequireAuth";
 import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const [token, setToken] = useState(() => {
@@ -22,7 +23,8 @@ function App() {
 
   return (
     <BrowserRouter> 
-    <Banner header="Task Management App" name="Task Management App" loggedIn={!!token} onSignOut={handleSignOut} />
+      <Banner header="Task Management App" name="Task Management App" loggedIn={!!token} onSignOut={handleSignOut} />
+      <Toaster position="top-center" />
       <Routes>
         <Route path="/login" element={<Login onLogin={setToken} /> } />
         <Route path="/register" element={<Register />} />
