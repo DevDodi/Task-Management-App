@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import ProjectDetails from "./pages/ProjectDetails";
 import Banner from "./components/Banner";
 import RequireAuth from "./components/RequireAuth";
+import Logo from "./assets/task-list-logo.svg";
 import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
@@ -23,7 +24,7 @@ function App() {
 
   return (
     <BrowserRouter> 
-      <Banner header="Task Management App" name="Task Management App" loggedIn={!!token} onSignOut={handleSignOut} />
+      <Banner header="Task Management App" logo={Logo} name="Task Management App" loggedIn={!!token} onSignOut={handleSignOut} />
       <Toaster position="top-center" />
       <Routes>
         <Route path="/login" element={<Login onLogin={setToken} /> } />

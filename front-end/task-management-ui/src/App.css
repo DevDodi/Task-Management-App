@@ -1,8 +1,17 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 body {
   background-color: #FFF4e2;
   color: white;
   font-family: 'DM Sans', sans-serif;
-  margin: 0;
-  padding-top: 60px;
-  min-height: calc(100vh - 60px);
+}
+
+#root {
+  height: 100%;
+  width: 100%;
 }
