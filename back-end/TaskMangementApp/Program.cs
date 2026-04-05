@@ -16,7 +16,7 @@ builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<ITaskLogService, TaskLogService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IJwtSevice, JwtService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 builder.Services.AddScoped<IEventHandler, TaskLogEventHandler>();
 builder.Services.AddScoped<IEventPublisher, EventPublisher>();

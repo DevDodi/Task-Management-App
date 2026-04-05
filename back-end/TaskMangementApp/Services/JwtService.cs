@@ -12,7 +12,7 @@ using TaskMangementApp.Services.Responses;
 
 namespace TaskMangementApp.Services
 {
-    public class JwtService(AppDBContext dbContext, IConfiguration config) : IJwtSevice
+    public class JwtService(AppDBContext dbContext, IConfiguration config) : IJwtService
     {
         public Task<JwtServiceResponse> Authenticate(JsonElement userJson)
         {

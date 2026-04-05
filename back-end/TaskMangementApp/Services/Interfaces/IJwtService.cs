@@ -3,7 +3,7 @@ using TaskMangementApp.Services.Responses;
 
 namespace TaskMangementApp.Services.Interfaces
 {
-    public interface IJwtSevice
+    public interface IJwtService
     {
         Task<JwtServiceResponse> Authenticate(JsonElement userJson);
     }

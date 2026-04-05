@@ -8,7 +8,7 @@ namespace TaskMangementApp.Controllers
 {
     [ApiController]
     [Route("api/auth")]
-    public class AuthController (IJwtSevice jwtService) : ControllerBase
+    public class AuthController (IJwtService jwtService) : ControllerBase
     {
         [AllowAnonymous]
         [HttpPost]
