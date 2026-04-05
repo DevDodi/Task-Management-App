@@ -46,6 +46,7 @@ export default function Projects() {
         const projectId = crypto.randomUUID();
         await createProject({Id: projectId, Name: name, Description: description, OwnerId: assignee});
         setShowCreateModal(false);
+        toast.success("Project created!");
         navigate(`/projects/${projectId}`);
     }
 
@@ -58,6 +59,7 @@ export default function Projects() {
     const handleDelete = async () => {
         await deleteProject(selectedProject.id);
         setShowEditModal(false);
+        toast.success("Project deleted!");
         refreshPage();
     }
 

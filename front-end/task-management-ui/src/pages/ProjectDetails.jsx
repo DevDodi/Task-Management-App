@@ -103,6 +103,7 @@ export default function ProjectDetails() {
             AssignedProject: id, // TODO: add choice of changing task to different project
         });
         setShowCreateModal(false);
+        toast.success("Task created!");
         refreshPage();
     }
 
@@ -123,6 +124,7 @@ export default function ProjectDetails() {
         await deleteTask(selectedTask.id);
         setShowEditModal(false);
         setSelectedTask(null);    
+        toast.success("Task deleted!");
         refreshPage();
     }
 
