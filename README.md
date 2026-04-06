@@ -20,6 +20,8 @@ Perfect for learning about event-driven architecture, dependency injection, and 
 ```bash
 cd back-end
 dotnet restore
+dotnet user-secrets init
+dotnet user-secrets set "JwtSettings:Key" "YOUR_GENERATED_KEY_HERE"
 dotnet ef database update
 dotnet run
 ```
@@ -31,10 +33,23 @@ Backend runs on: `https://localhost:7114/api`
 ```bash
 cd front-end/task-management-ui
 npm install
+cp .env.example .env
+```
+
+Then open `.env` and fill in your values:
+- VITE_API_URL=[INSERT_API_URL] (if using default, then insert `https://localhost:7114/api`)
+
+```bash
 npm run dev
 ```
 
 Frontend runs on: `http://localhost:5173`
+
+## ⚙️ Configuration
+
+### Frontend Environment
+
+The frontend communicates with the backend API at `https://localhost:7114/api`. If not assigned, then the default API base URL in `src/api/httpClient.js` will be used.
 
 ## 🚀 Usage
 
@@ -113,20 +128,6 @@ dotnet test TaskManagementApp.Tests
 | POST | `/tasks` | Create task |
 | GET | `/tasks` | Get all tasks |
 | GET | `/tasklogs/{taskId}` | Get task audit log |
-
-## ⚙️ Configuration
-
-### Frontend Environment
-
-The frontend communicates with the backend API at `https://localhost:7114/api`. Update the API base URL in `src/api/httpClient.js` if needed.
-
-### Frontend Features
-
-- **Authentication** - User login & registration with JWT tokens
-- **Project Management** - Create and organize projects
-- **Task Management** - Full CRUD operations with status tracking
-- **Responsive UI** - Built with Chakra UI for cross-device compatibility
-- **Real-time Updates** - React Query handles data fetching and caching
 
 ## 📁 Project Structure
 

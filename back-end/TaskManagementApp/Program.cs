@@ -10,6 +10,12 @@ using TaskManagementApp.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Load User Secrets in development
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddUserSecrets<Program>();
+}
+
 // Add services to the container.
 
 builder.Services.AddScoped<IProjectService, ProjectService>();
@@ -33,8 +39,12 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
-    var jwt = builder.Configuration.GetSection("JwtSettings");
-    var key = Encoding.UTF8.GetBytes(jwt["Key"]!);
+    // Try to get key from: User Secrets (dev) → Environment Variable → appsettings.json
+    var jwtKey = builder.Configuration["JwtSettings:Key"]
+        ?? Environment.GetEnvironmentVariable("JWT_KEY")
+        ?? throw new InvalidOperationException("JWT key not configured. Set via User Secrets or JWT_KEY environment variable.");
+    
+    var key = Encoding.UTF8.GetBytes(jwtKey);
 
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -42,8 +52,8 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = jwt["Issuer"],
-        ValidAudience = jwt["Audience"],
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+        ValidAudience = builder.Configuration["JwtSettings:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 });
