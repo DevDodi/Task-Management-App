@@ -45,12 +45,6 @@ npm run dev
 
 Frontend runs on: `http://localhost:5173`
 
-## ⚙️ Configuration
-
-### Frontend Environment
-
-The frontend communicates with the backend API at `https://localhost:7114/api`. If not assigned, then the default API base URL in `src/api/httpClient.js` will be used.
-
 ## 🚀 Usage
 
 ### Backend - Example API Calls
@@ -90,6 +84,7 @@ dotnet test TaskManagementApp.Tests
 ## ✨ Features
 
 - ✅ **User Management** - Registration, authentication
+- ✅ **Frontend** - Fully functional React + Vite UI with protected routes, toast notifications, and responsive layouts
 - ✅ **Projects** - Create, organize, and manage projects
 - ✅ **Tasks** - Full CRUD with status tracking and assignment
 - ✅ **Audit Logging** - Automatic task log creation via events
@@ -118,16 +113,37 @@ dotnet test TaskManagementApp.Tests
 
 ## 📡 API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/auth/login` | Login user |
-| POST | `/users` | Create user |
-| GET | `/users` | Get all users |
-| POST | `/projects` | Create project |
-| GET | `/projects` | Get all projects |
-| POST | `/tasks` | Create task |
-| GET | `/tasks` | Get all tasks |
-| GET | `/tasklogs/{taskId}` | Get task audit log |
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|----------------|
+| **Authentication** |
+| POST | `/auth/login` | Login user | No |
+| **Users** |
+| POST | `/users` | Create new user | No |
+| GET | `/users` | Get all users | Yes |
+| GET | `/users/{id}` | Get user by ID | Yes |
+| PUT | `/users/{id}` | Update user | Yes |
+| DELETE | `/users/{id}` | Delete user | Yes |
+| **Projects** |
+| POST | `/projects` | Create new project | Yes |
+| GET | `/projects` | Get all projects | Yes |
+| GET | `/projects/{id}` | Get project by ID | Yes |
+| PUT | `/projects/{id}` | Update project | Yes |
+| DELETE | `/projects/{id}` | Delete project | Yes |
+| **Tasks** |
+| POST | `/tasks` | Create new task | Yes |
+| GET | `/tasks` | Get all tasks | Yes |
+| GET | `/tasks/{id}` | Get task by ID | Yes |
+| PUT | `/tasks/{id}` | Update task | Yes |
+| DELETE | `/tasks/{id}` | Delete task | Yes |
+| **Task Logs (Audit Trail)** |
+| GET | `/tasklogs/{taskId}` | Get audit logs for a task | Yes |
+
+### Authentication Header
+
+For protected endpoints (Auth Required = Yes), include:
+```
+Authorization: Bearer <JWT_TOKEN>
+```
 
 ## 📁 Project Structure
 
