@@ -1,16 +1,50 @@
-# React + Vite
+# Task Management UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React + Vite frontend for the Task Management Application. Features user authentication, project and task management with a responsive UI powered by Chakra UI.
 
-Currently, two official plugins are available:
+## 🚀 Quick Start
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+npm install
+npm run dev
+```
 
-## React Compiler
+Runs on: `http://localhost:5173`
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📦 Scripts
 
-## Expanding the ESLint configuration
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run lint` - Run ESLint
+- `npm run preview` - Preview production build
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tech Stack
+
+- **React 19** - UI framework
+- **Vite** - Build tool with fast HMR
+- **Chakra UI** - Component library
+- **React Router** - Client-side routing
+- **React Query** - Data fetching & caching
+- **Axios** - HTTP client
+- **React Hot Toast** - Notifications
+- **Framer Motion** - Animations
+
+## 📁 Project Structure
+
+```
+src/
+├── api/           # API endpoints (auth, tasks, projects, users)
+├── components/    # Reusable UI components (Modal, Table, Badge, etc.)
+├── pages/         # App pages (Login, Register, Projects, ProjectDetails)
+├── utils/         # Utility functions
+├── App.jsx        # Main app component
+└── main.jsx       # Entry point
+```
+
+## 🔒 Authentication
+
+Protected routes are managed via the `RequireAuth` component. Users must log in to access the main app.
+
+## 📡 API Integration
+
+The app communicates with the backend API at `https://localhost:7114/api`. HTTP client configuration is in `src/api/httpClient.js`.

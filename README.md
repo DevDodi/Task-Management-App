@@ -42,14 +42,14 @@ Frontend runs on: `http://localhost:5173`
 
 **Login:**
 ```bash
-curl -X POST https://localhost:5000/api/auth/login \
+curl -X POST https://localhost:7114/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"user@example.com","password":"password123"}'
 ```
 
 **Create Task:**
 ```bash
-curl -X POST https://localhost:5000/api/tasks \
+curl -X POST https://localhost:7114/api/tasks \
   -H "Authorization: Bearer <JWT_TOKEN>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -62,7 +62,7 @@ curl -X POST https://localhost:5000/api/tasks \
 
 **View Task Audit Log:**
 ```bash
-curl -X GET https://localhost:5000/api/tasklogs/{taskId} \
+curl -X GET https://localhost:7114/api/tasklogs/{taskId} \
   -H "Authorization: Bearer <JWT_TOKEN>"
 ```
 
@@ -92,10 +92,14 @@ dotnet test TaskManagementApp.Tests
 - xUnit, Moq (testing)
 
 **Frontend:**
-- React 18+
+- React 19
 - Vite
-- Axios / Fetch
-- CSS (styling)
+- Chakra UI - Component library
+- React Router - Client-side routing
+- React Query - Data fetching & caching
+- Axios - HTTP client
+- React Hot Toast - Notifications
+- Framer Motion - Animations
 
 ## 📡 API Endpoints
 
@@ -109,6 +113,20 @@ dotnet test TaskManagementApp.Tests
 | POST | `/tasks` | Create task |
 | GET | `/tasks` | Get all tasks |
 | GET | `/tasklogs/{taskId}` | Get task audit log |
+
+## ⚙️ Configuration
+
+### Frontend Environment
+
+The frontend communicates with the backend API at `https://localhost:7114/api`. Update the API base URL in `src/api/httpClient.js` if needed.
+
+### Frontend Features
+
+- **Authentication** - User login & registration with JWT tokens
+- **Project Management** - Create and organize projects
+- **Task Management** - Full CRUD operations with status tracking
+- **Responsive UI** - Built with Chakra UI for cross-device compatibility
+- **Real-time Updates** - React Query handles data fetching and caching
 
 ## 📁 Project Structure
 
