@@ -13,10 +13,10 @@ namespace TaskManagementApp.Tests
 {
     public class TaskLogControllerTests
     {
-        private readonly Mock<ITaskLogService> _taskLogServiceMock = new();
+        private readonly Mock<ITaskLogService> taskLogServiceMock = new();
 
         private TaskLogController CreateController() =>
-            new TaskLogController(_taskLogServiceMock.Object);
+            new TaskLogController(taskLogServiceMock.Object);
 
         [Fact]
         public async System.Threading.Tasks.Task GetTaskLogs_ReturnsBadRequest_WhenTaskIdEmpty()
@@ -30,7 +30,7 @@ namespace TaskManagementApp.Tests
         public async System.Threading.Tasks.Task GetTaskLogs_ReturnsBadRequest_WhenServiceFails()
         {
             var taskId = Guid.NewGuid();
-            _taskLogServiceMock
+            taskLogServiceMock
                 .Setup(s => s.GetTaskLogsAsync(taskId, null, null))
                 .ReturnsAsync(new TaskLogServiceResponseList(false, null, "fail"));
 
@@ -44,7 +44,7 @@ namespace TaskManagementApp.Tests
         {
             var taskId = Guid.NewGuid();
             var logs = new List<TaskLog> { new TaskLog { Id = Guid.NewGuid(), TaskId = taskId } };
-            _taskLogServiceMock
+            taskLogServiceMock
                 .Setup(s => s.GetTaskLogsAsync(taskId, null, null))
                 .ReturnsAsync(new TaskLogServiceResponseList(true, logs));
 

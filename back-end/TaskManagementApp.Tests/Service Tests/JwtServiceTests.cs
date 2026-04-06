@@ -30,7 +30,7 @@ public class JwtServiceTests
     }
 
     [Fact]
-    public async void Authenticate_ReturnsFalse_WhenDeserializationFails()
+    public async System.Threading.Tasks.Task Authenticate_ReturnsFalse_WhenDeserializationFails()
     {
         var db = GetDbContext();
         var config = GetConfig();
@@ -40,7 +40,7 @@ public class JwtServiceTests
     }
 
     [Fact]
-    public async void Authenticate_ReturnsTrue_WithValidCredentials()
+    public async System.Threading.Tasks.Task Authenticate_ReturnsTrue_WithValidCredentials()
     {
         var db = GetDbContext();
         var config = GetConfig();
@@ -66,7 +66,7 @@ public class JwtServiceTests
     }
 
     [Fact]
-    public async void Authenticate_ReturnsFalse_WithInvalidPassword()
+    public async System.Threading.Tasks.Task Authenticate_ReturnsFalse_WithInvalidPassword()
     {
         var db = GetDbContext();
         var config = GetConfig();
@@ -91,7 +91,7 @@ public class JwtServiceTests
     }
 
     [Fact]
-    public async void Authenticate_ReturnsFalse_WithNonexistentUser()
+    public async System.Threading.Tasks.Task Authenticate_ReturnsFalse_WithNonexistentUser()
     {
         var db = GetDbContext();
         var config = GetConfig();

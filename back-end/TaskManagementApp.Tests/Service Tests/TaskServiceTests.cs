@@ -21,7 +21,7 @@ public class TaskServiceTests
     }
 
     [Fact]
-    public async void CreateTaskAsync_ReturnsFalse_WhenDeserializationFails()
+    public async System.Threading.Tasks.Task CreateTaskAsync_ReturnsFalse_WhenDeserializationFails()
     {
         var db = GetDbContext();
         var publisher = new Mock<IEventPublisher>();
@@ -31,7 +31,7 @@ public class TaskServiceTests
     }
 
     [Fact]
-    public async void CreateTaskAsync_ReturnsFalse_WhenAssignedUserDoesNotExist()
+    public async System.Threading.Tasks.Task CreateTaskAsync_ReturnsFalse_WhenAssignedUserDoesNotExist()
     {
         var db = GetDbContext();
         var publisher = new Mock<IEventPublisher>();
@@ -44,7 +44,7 @@ public class TaskServiceTests
     }
 
     [Fact]
-    public async void CreateTaskAsync_ReturnsFalse_WhenAssignedProjectDoesNotExist()
+    public async System.Threading.Tasks.Task CreateTaskAsync_ReturnsFalse_WhenAssignedProjectDoesNotExist()
     {
         var db = GetDbContext();
         var publisher = new Mock<IEventPublisher>();
@@ -61,7 +61,7 @@ public class TaskServiceTests
     }
 
     [Fact]
-    public async void CreateTaskAsync_ReturnsTrue_WhenValid()
+    public async System.Threading.Tasks.Task CreateTaskAsync_ReturnsTrue_WhenValid()
     {
         var db = GetDbContext();
         var publisher = new Mock<IEventPublisher>();
@@ -79,7 +79,7 @@ public class TaskServiceTests
     }
 
     [Fact]
-    public async void DeleteTaskAsync_ReturnsFalse_WhenTaskNotFound()
+    public async System.Threading.Tasks.Task DeleteTaskAsync_ReturnsFalse_WhenTaskNotFound()
     {
         var db = GetDbContext();
         var publisher = new Mock<IEventPublisher>();
@@ -90,7 +90,7 @@ public class TaskServiceTests
     }
 
     [Fact]
-    public async void DeleteTaskAsync_ReturnsTrue_WhenTaskFound()
+    public async System.Threading.Tasks.Task DeleteTaskAsync_ReturnsTrue_WhenTaskFound()
     {
         var db = GetDbContext();
         var publisher = new Mock<IEventPublisher>();
@@ -104,7 +104,7 @@ public class TaskServiceTests
     }
 
     [Fact]
-    public async void UpdateTaskAsync_ReturnsFalse_WhenDeserializationFails()
+    public async System.Threading.Tasks.Task UpdateTaskAsync_ReturnsFalse_WhenDeserializationFails()
     {
         var db = GetDbContext();
         var publisher = new Mock<IEventPublisher>();
@@ -114,7 +114,7 @@ public class TaskServiceTests
     }
 
     [Fact]
-    public async void UpdateTaskAsync_ReturnsFalse_WhenAssignedUserDoesNotExist()
+    public async System.Threading.Tasks.Task UpdateTaskAsync_ReturnsFalse_WhenAssignedUserDoesNotExist()
     {
         var db = GetDbContext();
         var publisher = new Mock<IEventPublisher>();
@@ -131,7 +131,7 @@ public class TaskServiceTests
     }
 
     [Fact]
-    public async void UpdateTaskAsync_ReturnsFalse_WhenAssignedProjectDoesNotExist()
+    public async System.Threading.Tasks.Task UpdateTaskAsync_ReturnsFalse_WhenAssignedProjectDoesNotExist()
     {
         var db = GetDbContext();
         var publisher = new Mock<IEventPublisher>();
@@ -150,7 +150,7 @@ public class TaskServiceTests
     }
 
     [Fact]
-    public async void UpdateTaskAsync_ReturnsFalse_WhenTaskNotFound()
+    public async System.Threading.Tasks.Task UpdateTaskAsync_ReturnsFalse_WhenTaskNotFound()
     {
         var db = GetDbContext();
         var publisher = new Mock<IEventPublisher>();
@@ -166,7 +166,7 @@ public class TaskServiceTests
     }
 
     [Fact]
-    public async void UpdateTaskAsync_ReturnsTrue_WhenValid()
+    public async System.Threading.Tasks.Task UpdateTaskAsync_ReturnsTrue_WhenValid()
     {
         var db = GetDbContext();
         var publisher = new Mock<IEventPublisher>();

@@ -11,13 +11,13 @@ using System.Collections.Generic;
 
 public class ProjectControllerTests
 {
-    private readonly Mock<IProjectService> _projectServiceMock = new();
-    private ProjectController CreateController() => new ProjectController(_projectServiceMock.Object);
+    private readonly Mock<IProjectService> projectServiceMock = new();
+    private ProjectController CreateController() => new ProjectController(projectServiceMock.Object);
 
     [Fact]
     public async Task CreateProject_ReturnsOk_WhenSuccess()
     {
-        _projectServiceMock.Setup(s => s.CreateProjectAsync(It.IsAny<JsonElement>())).ReturnsAsync(new ProjectServiceResponse(true));
+        projectServiceMock.Setup(s => s.CreateProjectAsync(It.IsAny<JsonElement>())).ReturnsAsync(new ProjectServiceResponse(true));
         var controller = CreateController();
         var result = await controller.CreateProject(JsonDocument.Parse("{}".ToString()).RootElement);
         Assert.IsType<OkResult>(result);
@@ -26,7 +26,7 @@ public class ProjectControllerTests
     [Fact]
     public async Task CreateProject_ReturnsBadRequest_WhenFail()
     {
-        _projectServiceMock.Setup(s => s.CreateProjectAsync(It.IsAny<JsonElement>())).ReturnsAsync(new ProjectServiceResponse(false, null, "fail"));
+        projectServiceMock.Setup(s => s.CreateProjectAsync(It.IsAny<JsonElement>())).ReturnsAsync(new ProjectServiceResponse(false, null, "fail"));
         var controller = CreateController();
         var result = await controller.CreateProject(JsonDocument.Parse("{}".ToString()).RootElement);
         Assert.IsType<BadRequestObjectResult>(result);
@@ -36,7 +36,7 @@ public class ProjectControllerTests
     public async Task GetProject_ReturnsOk_WhenSuccess()
     {
         var id = Guid.NewGuid();
-        _projectServiceMock.Setup(s => s.GetProjectAsync(id)).ReturnsAsync(new ProjectServiceResponse(true, new TaskManagementApp.Models.Project { Name = "Test Project" }));
+        projectServiceMock.Setup(s => s.GetProjectAsync(id)).ReturnsAsync(new ProjectServiceResponse(true, new TaskManagementApp.Models.Project { Name = "Test Project" }));
         var controller = CreateController();
         var result = await controller.GetProject(id);
         Assert.IsType<OkObjectResult>(result.Result);
@@ -46,7 +46,7 @@ public class ProjectControllerTests
     public async Task GetProject_ReturnsBadRequest_WhenFail()
     {
         var id = Guid.NewGuid();
-        _projectServiceMock.Setup(s => s.GetProjectAsync(id)).ReturnsAsync(new ProjectServiceResponse(false, null, "fail"));
+        projectServiceMock.Setup(s => s.GetProjectAsync(id)).ReturnsAsync(new ProjectServiceResponse(false, null, "fail"));
         var controller = CreateController();
         var result = await controller.GetProject(id);
         Assert.IsType<BadRequestObjectResult>(result.Result);
@@ -55,7 +55,7 @@ public class ProjectControllerTests
     [Fact]
     public async Task GetProjectsAsync_ReturnsOk_WhenSuccess()
     {
-        _projectServiceMock.Setup(s => s.GetProjectsAsync(false, null)).ReturnsAsync(new ProjectServiceResponseList(true, new List<TaskManagementApp.Models.Project>()));
+        projectServiceMock.Setup(s => s.GetProjectsAsync(false, null)).ReturnsAsync(new ProjectServiceResponseList(true, new List<TaskManagementApp.Models.Project>()));
         var controller = CreateController();
         var result = await controller.GetProjectsAsync();
         Assert.IsType<OkObjectResult>(result.Result);

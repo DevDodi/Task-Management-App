@@ -17,7 +17,7 @@ public class ProjectServiceTests
     }
 
     [Fact]
-    public async void CreateProjectAsync_ReturnsFalse_WhenDeserializationFails()
+    public async System.Threading.Tasks.Task CreateProjectAsync_ReturnsFalse_WhenDeserializationFails()
     {
         var db = GetDbContext();
         var service = new ProjectService(db);
@@ -26,7 +26,7 @@ public class ProjectServiceTests
     }
 
     [Fact]
-    public async void CreateProjectAsync_ReturnsFalse_WhenOwnerDoesNotExist()
+    public async System.Threading.Tasks.Task CreateProjectAsync_ReturnsFalse_WhenOwnerDoesNotExist()
     {
         var db = GetDbContext();
         var service = new ProjectService(db);
@@ -38,7 +38,7 @@ public class ProjectServiceTests
     }
 
     [Fact]
-    public async void CreateProjectAsync_ReturnsTrue_WhenOwnerExists()
+    public async System.Threading.Tasks.Task CreateProjectAsync_ReturnsTrue_WhenOwnerExists()
     {
         var db = GetDbContext();
         var owner = new User { Email = "owner@example.com", PasswordHash = "hash" };
@@ -53,7 +53,7 @@ public class ProjectServiceTests
     }
 
     [Fact]
-    public async void DeleteProjectAsync_ReturnsFalse_WhenNotFound()
+    public async System.Threading.Tasks.Task DeleteProjectAsync_ReturnsFalse_WhenNotFound()
     {
         var db = GetDbContext();
         var service = new ProjectService(db);
@@ -63,7 +63,7 @@ public class ProjectServiceTests
     }
 
     [Fact]
-    public async void DeleteProjectAsync_ReturnsTrue_WhenFound()
+    public async System.Threading.Tasks.Task DeleteProjectAsync_ReturnsTrue_WhenFound()
     {
         var db = GetDbContext();
         var project = new Project { Name = "Test Project" };
@@ -76,7 +76,7 @@ public class ProjectServiceTests
     }
 
     [Fact]
-    public async void GetProjectAsync_ReturnsFalse_WhenNotFound()
+    public async System.Threading.Tasks.Task GetProjectAsync_ReturnsFalse_WhenNotFound()
     {
         var db = GetDbContext();
         var service = new ProjectService(db);
@@ -85,7 +85,7 @@ public class ProjectServiceTests
     }
 
     [Fact]
-    public async void GetProjectAsync_ReturnsTrue_WhenFound()
+    public async System.Threading.Tasks.Task GetProjectAsync_ReturnsTrue_WhenFound()
     {
         var db = GetDbContext();
         var project = new Project { Name = "Test Project" };
@@ -99,7 +99,7 @@ public class ProjectServiceTests
     }
 
     [Fact]
-    public async void GetProjectsAsync_ReturnsFalse_WhenUnassignedAndOwnerId()
+    public async System.Threading.Tasks.Task GetProjectsAsync_ReturnsFalse_WhenUnassignedAndOwnerId()
     {
         var db = GetDbContext();
         var service = new ProjectService(db);
@@ -109,7 +109,7 @@ public class ProjectServiceTests
     }
 
     [Fact]
-    public async void UpdateProjectAsync_ReturnsFalse_WhenDeserializationFails()
+    public async System.Threading.Tasks.Task UpdateProjectAsync_ReturnsFalse_WhenDeserializationFails()
     {
         var db = GetDbContext();
         var service = new ProjectService(db);
@@ -118,7 +118,7 @@ public class ProjectServiceTests
     }
 
     [Fact]
-    public async void UpdateProjectAsync_ReturnsFalse_WhenOwnerDoesNotExist()
+    public async System.Threading.Tasks.Task UpdateProjectAsync_ReturnsFalse_WhenOwnerDoesNotExist()
     {
         var db = GetDbContext();
         var project = new Project { Name = "Test Project" };
@@ -134,7 +134,7 @@ public class ProjectServiceTests
     }
 
     [Fact]
-    public async void UpdateProjectAsync_ReturnsFalse_WhenProjectNotFound()
+    public async System.Threading.Tasks.Task UpdateProjectAsync_ReturnsFalse_WhenProjectNotFound()
     {
         var db = GetDbContext();
         var owner = new User { Email = "owner@example.com", PasswordHash = "hash" };
@@ -149,7 +149,7 @@ public class ProjectServiceTests
     }
 
     [Fact]
-    public async void UpdateProjectAsync_ReturnsTrue_WhenValid()
+    public async System.Threading.Tasks.Task UpdateProjectAsync_ReturnsTrue_WhenValid()
     {
         var db = GetDbContext();
         var owner = new User { Email = "owner@example.com", PasswordHash = "hash" };

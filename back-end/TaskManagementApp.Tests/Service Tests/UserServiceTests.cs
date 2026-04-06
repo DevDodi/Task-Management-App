@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Text.Json;
+using System.Threading.Tasks;
 using TaskManagementApp.DB;
 using TaskManagementApp.Models;
 using TaskManagementApp.Services;
@@ -17,7 +18,7 @@ public class UserServiceTests
     }
 
     [Fact]
-    public async void CreateUserAsync_ReturnsFalse_WhenDeserializationFails()
+    public async System.Threading.Tasks.Task CreateUserAsync_ReturnsFalse_WhenDeserializationFails()
     {
         var db = GetDbContext();
         var service = new UserService(db);
@@ -26,7 +27,7 @@ public class UserServiceTests
     }
 
     [Fact]
-    public async void CreateUserAsync_ReturnsFalse_WhenEmailExists()
+    public async System.Threading.Tasks.Task CreateUserAsync_ReturnsFalse_WhenEmailExists()
     {
         var db = GetDbContext();
         db.Users.Add(new User { Email = "test@example.com", PasswordHash = "hash" });
@@ -41,7 +42,7 @@ public class UserServiceTests
     }
 
     [Fact]
-    public async void CreateUserAsync_ReturnsTrue_WhenValid()
+    public async System.Threading.Tasks.Task CreateUserAsync_ReturnsTrue_WhenValid()
     {
         var db = GetDbContext();
         var service = new UserService(db);
@@ -52,7 +53,7 @@ public class UserServiceTests
     }
 
     [Fact]
-    public async void DeleteUserAsync_ReturnsFalse_WhenNotFound()
+    public async System.Threading.Tasks.Task DeleteUserAsync_ReturnsFalse_WhenNotFound()
     {
         var db = GetDbContext();
         var service = new UserService(db);
@@ -62,7 +63,7 @@ public class UserServiceTests
     }
 
     [Fact]
-    public async void DeleteUserAsync_ReturnsTrue_WhenFound()
+    public async System.Threading.Tasks.Task DeleteUserAsync_ReturnsTrue_WhenFound()
     {
         var db = GetDbContext();
         var user = new User { Email = "delete@example.com", PasswordHash = "hash" };
@@ -75,7 +76,7 @@ public class UserServiceTests
     }
 
     [Fact]
-    public async void GetUsersAsync_ReturnsAllUsers()
+    public async System.Threading.Tasks.Task GetUsersAsync_ReturnsAllUsers()
     {
         var db = GetDbContext();
         db.Users.Add(new User { Email = "a@example.com", PasswordHash = "hash" });
@@ -89,7 +90,7 @@ public class UserServiceTests
     }
 
     [Fact]
-    public async void GetUserAsync_ReturnsFalse_WhenNotFound()
+    public async System.Threading.Tasks.Task GetUserAsync_ReturnsFalse_WhenNotFound()
     {
         var db = GetDbContext();
         var service = new UserService(db);
@@ -98,7 +99,7 @@ public class UserServiceTests
     }
 
     [Fact]
-    public async void GetUserAsync_ReturnsTrue_WhenFound()
+    public async System.Threading.Tasks.Task GetUserAsync_ReturnsTrue_WhenFound()
     {
         var db = GetDbContext();
         var user = new User { Email = "findme@example.com", PasswordHash = "hash" };
@@ -113,7 +114,7 @@ public class UserServiceTests
     }
 
     [Fact]
-    public async void UpdateUserAsync_ReturnsFalse_WhenDeserializationFails()
+    public async System.Threading.Tasks.Task UpdateUserAsync_ReturnsFalse_WhenDeserializationFails()
     {
         var db = GetDbContext();
         var service = new UserService(db);
@@ -122,7 +123,7 @@ public class UserServiceTests
     }
 
     [Fact]
-    public async void UpdateUserAsync_ReturnsFalse_WhenEmailExistsForAnotherUser()
+    public async System.Threading.Tasks.Task UpdateUserAsync_ReturnsFalse_WhenEmailExistsForAnotherUser()
     {
         var db = GetDbContext();
         var user1 = new User { Email = "user1@example.com", PasswordHash = "hash" };
@@ -140,7 +141,7 @@ public class UserServiceTests
     }
 
     [Fact]
-    public async void UpdateUserAsync_ReturnsFalse_WhenUserNotFound()
+    public async System.Threading.Tasks.Task UpdateUserAsync_ReturnsFalse_WhenUserNotFound()
     {
         var db = GetDbContext();
         var service = new UserService(db);
@@ -151,7 +152,7 @@ public class UserServiceTests
     }
 
     [Fact]
-    public async void UpdateUserAsync_ReturnsTrue_WhenValid()
+    public async System.Threading.Tasks.Task UpdateUserAsync_ReturnsTrue_WhenValid()
     {
         var db = GetDbContext();
         var user = new User { Email = "update@example.com", PasswordHash = "hash" };
