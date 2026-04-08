@@ -2,13 +2,15 @@
 
 A full-stack task management application with a .NET 10 backend API and React + Vite frontend. Features JWT authentication, event-driven architecture for audit logging, and comprehensive test coverage.
 
+![App Screenshot](./assets/DEMO-Image.png)
+
 ## 🎯 Overview
 
 This project demonstrates modern software development practices:
 - **Backend**: .NET 10 ASP.NET Core with service-oriented architecture
 - **Frontend**: React + Vite for fast, responsive UI
 - **Architecture**: Event-driven system with automatic audit trail creation
-- **Testing**: 25+ comprehensive unit and integration tests using xUnit and Moq
+- **Testing**: 25+ comprehensive unit tests using xUnit and Moq
 - **Security**: JWT authentication with BCrypt password hashing
 
 Perfect for learning about event-driven architecture, dependency injection, and full-stack development with .NET and React.
