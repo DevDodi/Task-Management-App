@@ -18,7 +18,7 @@ Perfect for learning about event-driven architecture, dependency injection, and 
 ### Backend Setup
 
 ```bash
-cd back-end
+cd back-end\TaskManagementApp
 dotnet restore
 dotnet user-secrets init
 dotnet user-secrets set "JwtSettings:Key" "YOUR_GENERATED_KEY_HERE"
