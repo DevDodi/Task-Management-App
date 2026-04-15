@@ -19,11 +19,14 @@ Perfect for learning about event-driven architecture, dependency injection, and 
 
 ### Backend Setup
 
+.NET 10 SDK
+
 ```bash
 cd back-end\TaskManagementApp
 dotnet restore
 dotnet user-secrets init
 dotnet user-secrets set "JwtSettings:Key" "YOUR_GENERATED_KEY_HERE"
+dotnet tool install --global dotnet-ef
 dotnet ef database update
 dotnet run
 ```
@@ -31,6 +34,8 @@ dotnet run
 Backend runs on: `https://localhost:7114/api`
 
 ### Frontend Setup
+
+Node.js (v18+ recommended)
 
 ```bash
 cd front-end/task-management-ui
